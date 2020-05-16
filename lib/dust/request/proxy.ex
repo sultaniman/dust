@@ -6,43 +6,60 @@ defmodule Dust.Request.Proxy do
   use TypedStruct
   alias __MODULE__
 
+  @max_redirects 2
+
   @typedoc "Proxy"
   typedstruct do
     field :address, String.t()
     field :username, String.t()
     field :password, String.t()
     field :follow_redirect, boolean(), default: true
-    field :max_redirects, non_neg_integer()
+    field :max_redirects, non_neg_integer(), default: @max_redirects
   end
 
   @doc """
   Prepare proxy configuration for `HTTPoison`
   """
+  @spec get_config(Proxy.t()) :: Keyword.t()
   def get_config(%Proxy{} = proxy) do
     prepare_proxy(URI.parse(proxy.address), proxy)
   end
 
   defp prepare_proxy(%URI{scheme: "socks5"} = uri, %Proxy{} = proxy) do
-    config = [
-      socks5_user: proxy.username,
-      socks5_pass: proxy.password,
-      follow_redirect: proxy.follow_redirect,
-      max_redirect: proxy.max_redirects
-    ]
+    proxy
+    |> base_config()
+    |> Keyword.merge(get_auth(:socks, proxy))
+    |> Keyword.put(:proxy, {:socks5, to_charlist(uri.host), uri.port})
 
-    if uri.port do
-      Keyword.put(config, :proxy, {:socks5, to_charlist(uri.host), uri.port})
-    else
-      Keyword.put(config, :proxy, {:socks5, to_charlist(uri.host), 80})
-    end
   end
 
   defp prepare_proxy(%URI{} = uri, %Proxy{} = proxy) do
+    proxy
+    |> base_config()
+    |> Keyword.merge(get_auth(:http, proxy))
+    |> Keyword.merge(proxy: to_charlist(uri.host))
+  end
+
+  defp base_config(%Proxy{} = proxy) do
     [
-      proxy: to_charlist(uri.host),
-      proxy_auth: {proxy.username, proxy.password},
       follow_redirect: proxy.follow_redirect,
       max_redirect: proxy.max_redirects
     ]
+  end
+
+  defp get_auth(:socks, %Proxy{} = proxy) do
+    if Map.has_key?(proxy, "username") && Map.has_key?(proxy, "password") do
+      [socks5_user: proxy.username, socks5_pass: proxy.password]
+    else
+      []
+    end
+  end
+
+  defp get_auth(:http, %Proxy{} = proxy) do
+    if Map.has_key?(proxy, "username") && Map.has_key?(proxy, "password") do
+      [proxy_auth: {proxy.username, proxy.password}]
+    else
+      []
+    end
   end
 end
