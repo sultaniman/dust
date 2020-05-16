@@ -1,0 +1,3 @@
+%{
+  "retry": {:hex, :retry, "0.14.0", "751c0f6db0b5127acf346ea6f6c363ec4588320db785c62aa51776b4d280bf07", [:mix], [], "hexpm", "5c158bccf5e4de2a13d044b9930ceb7e7499c29e3fccd7c96f131a6b83a1cff3"},
+}
