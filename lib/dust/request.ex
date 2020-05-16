@@ -3,7 +3,7 @@ defmodule Dust.Request do
   alias Dust.Result
 
   @type url() :: String.t()
-  @type options() :: Keyword.t()
+  @type options() :: Keyword.t() | any()
 
   @spec fetch(url(), options()) :: Result.t()
   def fetch(_url, _options) do
