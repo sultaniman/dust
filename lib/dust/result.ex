@@ -8,6 +8,7 @@ defmodule Dust.Result do
   typedstruct do
     field :content, String.t()
     field :status, non_neg_integer()
+    field :duration, non_neg_integer()
     field :headers, [{atom, binary}] | [{binary, binary}] | %{binary => binary} | any
     field :images, list()
     field :css, list()
