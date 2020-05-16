@@ -22,6 +22,7 @@ defmodule Dust.MixProject do
 
   defp deps do
     [
+      {:httpoison, "~> 1.6"},
       {:retry, "~> 0.14.0"}
     ]
   end
