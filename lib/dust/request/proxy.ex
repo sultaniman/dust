@@ -28,38 +28,47 @@ defmodule Dust.Request.Proxy do
   defp prepare_proxy(%URI{scheme: "socks5"} = uri, %Proxy{} = proxy) do
     proxy
     |> base_config()
-    |> Keyword.merge(get_auth(:socks, proxy))
+    |> Keyword.merge(get_auth(:socks, proxy, uri))
     |> Keyword.put(:proxy, {:socks5, to_charlist(uri.host), uri.port})
-
   end
 
   defp prepare_proxy(%URI{} = uri, %Proxy{} = proxy) do
     proxy
     |> base_config()
-    |> Keyword.merge(get_auth(:http, proxy))
+    |> Keyword.merge(get_auth(:http, proxy, uri))
     |> Keyword.merge(proxy: to_charlist(uri.host))
   end
 
   defp base_config(%Proxy{} = proxy) do
     [
       follow_redirect: proxy.follow_redirect,
-      max_redirect: proxy.max_redirects
+      max_redirects: proxy.max_redirects
     ]
   end
 
-  defp get_auth(:socks, %Proxy{} = proxy) do
-    if Map.has_key?(proxy, "username") && Map.has_key?(proxy, "password") do
+  defp get_auth(:socks, %Proxy{} = proxy, %URI{} = uri) do
+    if proxy.username && proxy.password do
       [socks5_user: proxy.username, socks5_pass: proxy.password]
     else
-      []
+      if uri.userinfo do
+        [username, password] = String.split(uri.userinfo, ":")
+        [socks5_user: username, socks5_pass: password]
+      else
+        []
+      end
     end
   end
 
-  defp get_auth(:http, %Proxy{} = proxy) do
-    if Map.has_key?(proxy, "username") && Map.has_key?(proxy, "password") do
+  defp get_auth(:http, %Proxy{} = proxy, %URI{} = uri) do
+    if proxy.username && proxy.password do
       [proxy_auth: {proxy.username, proxy.password}]
     else
-      []
+      if uri.userinfo do
+        [username, password] = String.split(uri.userinfo, ":")
+        [proxy_auth: {username, password}]
+      else
+        []
+      end
     end
   end
 end
