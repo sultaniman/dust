@@ -8,6 +8,6 @@ defprotocol Dust.Transformer.Stage do
   @spec extract(content()) :: pairs()
   def extract(content)
 
-  @spec embed(content(), pairs(), keyword()) :: content()
+  @spec embed(content(), pairs(), Keyword.t()) :: content()
   def embed(content, elements, opts \\ [])
 end

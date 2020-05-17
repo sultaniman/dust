@@ -1,7 +1,7 @@
 defmodule Dust.Request do
   @moduledoc false
   alias Dust.Result
-  alias Dust.Request.{Proxy, Util}
+  alias Dust.Request.{Client, Proxy, Util}
 
   @type url() :: String.t()
   @type options() :: Keyword.t() | any()
@@ -25,22 +25,32 @@ defmodule Dust.Request do
 
   defp get(url, headers, config) do
     start_ms = System.monotonic_time(:millisecond)
+    client = %Client{
+      opts: config,
+      headers: headers
+    }
 
     case HTTPoison.get(url, headers, config) do
       {:ok, %HTTPoison.Response{status_code: status, body: body, headers: response_headers}} ->
-        %Result{
-          content: body,
-          status: status,
-          duration: Util.duration(start_ms),
-          headers: response_headers
+        {
+          client,
+          %Result{
+            content: body,
+            status: status,
+            duration: Util.duration(start_ms),
+            headers: response_headers
+          }
         }
 
       {:error, %HTTPoison.Error{reason: reason}} ->
-        %Result{
-          content: reason,
-          status: 0,
-          duration: Util.duration(start_ms),
-          headers: nil,
+        {
+          client,
+          %Result{
+            content: reason,
+            status: 0,
+            duration: Util.duration(start_ms),
+            headers: nil,
+          }
         }
     end
   end
