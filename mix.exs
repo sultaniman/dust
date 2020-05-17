@@ -24,6 +24,7 @@ defmodule Dust.MixProject do
     [
       {:httpoison, "~> 1.6"},
       {:retry, "~> 0.14.0"},
+      {:floki, "~> 0.26.0"},
       {:typed_struct, "~> 0.1.4"}
     ]
   end
