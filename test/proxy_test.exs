@@ -10,7 +10,7 @@ defmodule Dust.ProxyTest do
 
       expected = [
         proxy: {:socks5, '192.168.0.1', 1234},
-        follow_redirect: true,
+        follow_redirects: true,
         max_redirects: 2
       ]
 
@@ -25,7 +25,7 @@ defmodule Dust.ProxyTest do
 
       expected = [
         proxy: {:socks5, '192.168.0.1', 1234},
-        follow_redirect: true,
+        follow_redirects: true,
         max_redirects: 10,
         socks5_user: "user",
         socks5_pass: "password"
@@ -39,7 +39,7 @@ defmodule Dust.ProxyTest do
 
       expected = [
         proxy: {:socks5, '192.168.0.1', 1234},
-        follow_redirect: true,
+        follow_redirects: true,
         max_redirects: 2,
         socks5_user: "user",
         socks5_pass: "password"
@@ -54,7 +54,7 @@ defmodule Dust.ProxyTest do
       }
 
       expected = [
-        follow_redirect: true,
+        follow_redirects: true,
         max_redirects: 2,
         proxy: '192.168.0.1'
       ]
@@ -69,7 +69,7 @@ defmodule Dust.ProxyTest do
       }
 
       expected = [
-        follow_redirect: true,
+        follow_redirects: true,
         max_redirects: 10,
         proxy_auth: {"user", "password"},
         proxy: '192.168.0.1'
@@ -82,7 +82,7 @@ defmodule Dust.ProxyTest do
       }
 
       expected = [
-        follow_redirect: true,
+        follow_redirects: true,
         max_redirects: 2,
         proxy_auth: {"user", "password"},
         proxy: '192.168.0.1'
