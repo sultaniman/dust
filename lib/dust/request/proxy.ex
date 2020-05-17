@@ -29,6 +29,9 @@ defmodule Dust.Request.Proxy do
     field :max_redirects, non_neg_integer(), default: @max_redirects
   end
 
+  def get_config(nil) do
+    []
+  end
   @doc """
   Prepare proxy configuration for `HTTPoison`
   """

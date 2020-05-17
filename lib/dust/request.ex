@@ -44,5 +44,4 @@ defmodule Dust.Request do
         }
     end
   end
-
 end
