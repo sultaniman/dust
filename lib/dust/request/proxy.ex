@@ -22,7 +22,11 @@ defmodule Dust.Request.Proxy do
   """
   @spec get_config(Proxy.t()) :: Keyword.t()
   def get_config(%Proxy{} = proxy) do
-    prepare_proxy(URI.parse(proxy.address), proxy)
+    if proxy != nil do
+      prepare_proxy(URI.parse(proxy.address), proxy)
+    else
+      []
+    end
   end
 
   defp prepare_proxy(%URI{scheme: "socks5"} = uri, %Proxy{} = proxy) do

@@ -6,15 +6,21 @@ defmodule Dust.Request do
   @type url() :: String.t()
   @type options() :: Keyword.t() | any()
 
+  @doc """
+  Available options
+
+  1. `:headers`,
+  2. `:proxy`
+  """
   @spec fetch(url(), options()) :: Result.t()
   def fetch(url, options) do
-    headers = Keyword.get(options, :headers, %{})
-    proxy = Keyword.get(options, :proxy)
-    if proxy do
-      get(url, headers, Proxy.get_config(proxy))
-    else
-      get(url, headers, [])
-    end
+    url
+    |> get(
+      Keyword.get(options, :headers, %{}),
+      options
+      |> Keyword.get(:proxy)
+      |> Proxy.get_config()
+    )
   end
 
   defp get(url, headers, config) do
