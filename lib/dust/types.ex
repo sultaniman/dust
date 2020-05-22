@@ -9,6 +9,7 @@ defmodule Dust.Types do
       @type content() :: String.t()
       @type links() :: list(String.t())
       @type resource() :: map()
+      @type value() :: binary()
 
       # For DOM elements
       @type xpath() :: String.to()
