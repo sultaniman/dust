@@ -1,4 +1,4 @@
-defmodule Dust.Request.Client do
+defmodule Dust.Request.ClientState do
   @moduledoc false
   use TypedStruct
 
@@ -6,5 +6,6 @@ defmodule Dust.Request.Client do
   typedstruct do
     field :opts, keyword(), default: []
     field :headers, map(), default: %{}
+    field :full_url, String.t()
   end
 end
