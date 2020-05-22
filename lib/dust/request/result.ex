@@ -1,4 +1,4 @@
-defmodule Dust.Result do
+defmodule Dust.Request.Result do
   @moduledoc """
   Result struct to store response data
   """
