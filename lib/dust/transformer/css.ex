@@ -1,9 +1,7 @@
 defmodule Dust.Transformer.CSS do
   @moduledoc false
-
-  @type content() :: String.t()
-  @type links() :: list(String.t())
-  @type link_resource() :: map()
+  use Dust.Types
+  alias Dust.Request.{ClientState, Util}
 
   @spec extract(content()) :: list(String.t())
   def extract(content) do
@@ -12,14 +10,22 @@ defmodule Dust.Transformer.CSS do
     end
   end
 
-  @spec fetch(links(), keyword()) :: link_resource()
+  @spec fetch(links(), Keyword.t()) :: list()
   def fetch(links, opts) do
-
+    client = Keyword.get(opts, :client, %ClientState{headers: %{}, opts: [], full_url: ""})
+    Enum.map(links, fn src ->
+      link = Util.normalize_url(client.full_url, src)
+      case HTTPoison.get(link, client.headers, client.opts) do
+        {:ok, response} -> {src, response}
+        {:error, reason} -> {src, reason}
+      end
+    end)
   end
 
   @spec embed(links(), content(), keyword()) :: list(String.t())
   def embed(elements, content, opts \\ []) do
-    client = Keyword.fetch!(opts, :client)
+    client = Keyword.get(opts, :client, %ClientState{headers: %{}, opts: []})
+
     elements
     |> Enum.map(fn src ->
       HTTPoison.get!(src, client.headers, client.opts)
