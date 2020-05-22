@@ -1,12 +1,23 @@
 defmodule Dust.Transformer.CSS do
   @moduledoc false
 
+  @type content() :: String.t()
+  @type links() :: list(String.t())
+  @type link_resource() :: map()
+
+  @spec extract(content()) :: list(String.t())
   def extract(content) do
     with {:ok, document} <- Floki.parse_document(content) do
       parse_style(document) ++ parse_link(document)
     end
   end
 
+  @spec fetch(links(), keyword()) :: link_resource()
+  def fetch(links, opts) do
+
+  end
+
+  @spec embed(links(), content(), keyword()) :: list(String.t())
   def embed(elements, content, opts \\ []) do
     client = Keyword.fetch!(opts, :client)
     elements

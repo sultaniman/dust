@@ -1,7 +1,11 @@
 defmodule Dust.Request do
   @moduledoc false
-  alias Dust.Result
-  alias Dust.Request.{Client, Proxy, Util}
+  alias Dust.Request.{
+    Client,
+    Proxy,
+    Result,
+    Util
+  }
 
   @type url() :: String.t()
   @type options() :: Keyword.t() | any()
@@ -12,15 +16,15 @@ defmodule Dust.Request do
   1. `:headers`,
   2. `:proxy`
   """
-  @spec fetch(url(), options()) :: Result.t()
+  @spec fetch(url(), options()) :: {Client.t(), Result.t()}
   def fetch(url, options) do
-    url
-    |> get(
-      Keyword.get(options, :headers, %{}),
+    headers = Keyword.get(options, :headers, %{})
+    config =
       options
       |> Keyword.get(:proxy)
       |> Proxy.get_config()
-    )
+
+    get(url, headers, config)
   end
 
   defp get(url, headers, config) do
