@@ -1,7 +1,7 @@
 defmodule Dust.Request do
   @moduledoc false
   alias Dust.Request.{
-    Client,
+    ClientState,
     Proxy,
     Result,
     Util
@@ -16,7 +16,7 @@ defmodule Dust.Request do
   1. `:headers`,
   2. `:proxy`
   """
-  @spec fetch(url(), options()) :: {Client.t(), Result.t()}
+  @spec fetch(url(), options()) :: {ClientState.t(), Result.t()}
   def fetch(url, options) do
     headers = Keyword.get(options, :headers, %{})
     config =
@@ -29,9 +29,11 @@ defmodule Dust.Request do
 
   defp get(url, headers, config) do
     start_ms = System.monotonic_time(:millisecond)
-    client = %Client{
+    uri = URI.parse(url)
+    client = %ClientState{
       opts: config,
-      headers: headers
+      headers: headers,
+      full_url: get_scheme(uri.scheme) <> uri.host
     }
 
     case HTTPoison.get(url, headers, config) do
@@ -56,6 +58,14 @@ defmodule Dust.Request do
             headers: nil,
           }
         }
+    end
+  end
+
+  defp get_scheme(scheme) do
+    if String.starts_with?(scheme, "http") do
+      "#{scheme}://"
+    else
+      "http://"
     end
   end
 end
