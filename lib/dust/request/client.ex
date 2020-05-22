@@ -4,7 +4,7 @@ defmodule Dust.Request.Client do
 
   @typedoc "HTTP client configuration"
   typedstruct do
-    field :opts, map()
-    field :headers, map()
+    field :opts, keyword(), default: []
+    field :headers, map(), default: %{}
   end
 end
