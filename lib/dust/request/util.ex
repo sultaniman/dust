@@ -20,7 +20,7 @@ defmodule Dust.Request.Util do
 
       String.starts_with?(url, "//") ->
         %{scheme: scheme} = URI.parse(domain)
-        "#{scheme}:#{url}"
+        "#{scheme || "https"}:#{url}"
 
       true ->
         trimmed = String.trim(domain, "/")
