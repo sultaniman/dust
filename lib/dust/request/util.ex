@@ -15,12 +15,17 @@ defmodule Dust.Request.Util do
 
   @spec normalize_url(domain(), uri()) :: String.t()
   def normalize_url(domain, url) do
-    if String.starts_with?(url, "http") do
-      url
-    else
-      trimmed = String.trim(domain, "/")
-      path = String.trim(url, "/")
-      "#{trimmed}/#{path}"
+    cond do
+      String.starts_with?(url, "http") -> url
+
+      String.starts_with?(url, "//") ->
+        %{scheme: scheme} = URI.parse(domain)
+        "#{scheme}:#{url}"
+
+      true ->
+        trimmed = String.trim(domain, "/")
+        path = String.trim(url, "/")
+        "#{trimmed}/#{path}"
     end
   end
 end
