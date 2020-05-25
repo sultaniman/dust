@@ -8,11 +8,6 @@ defmodule Dust.Request.Util do
     System.monotonic_time(:millisecond) - start_ms
   end
 
-  @spec same_domain?(domain(), uri()) :: boolean()
-  def same_domain?(domain, uri) do
-    true
-  end
-
   @spec normalize_url(domain(), uri()) :: String.t()
   def normalize_url(domain, url) do
     cond do
