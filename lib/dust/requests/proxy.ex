@@ -1,4 +1,4 @@
-defmodule Dust.Request.Proxy do
+defmodule Dust.Requests.Proxy do
   @moduledoc """
   Proxy configuration struct.
   Proxy address can start with `http/s` or `socks5`.
@@ -10,7 +10,7 @@ defmodule Dust.Request.Proxy do
   ```elixir
   # 2 fields with default values
   %Proxy{
-    follow_redirects: true
+    follow_redirect: true
     max_redirects: 2
   }
   ```
@@ -25,7 +25,7 @@ defmodule Dust.Request.Proxy do
     field :address, String.t()
     field :username, String.t()
     field :password, String.t()
-    field :follow_redirects, boolean(), default: true
+    field :follow_redirect, boolean(), default: true
     field :max_redirects, non_neg_integer(), default: @max_redirects
   end
 
@@ -59,7 +59,7 @@ defmodule Dust.Request.Proxy do
 
   defp base_config(%Proxy{} = proxy) do
     [
-      follow_redirects: proxy.follow_redirects,
+      follow_redirect: proxy.follow_redirect,
       max_redirects: proxy.max_redirects
     ]
   end
