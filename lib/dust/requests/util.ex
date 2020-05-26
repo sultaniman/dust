@@ -1,4 +1,4 @@
-defmodule Dust.Request.Util do
+defmodule Dust.Requests.Util do
   @moduledoc false
   @type domain() :: binary()
   @type uri() :: binary()
@@ -15,7 +15,7 @@ defmodule Dust.Request.Util do
 
       String.starts_with?(url, "//") ->
         %{scheme: scheme} = URI.parse(domain)
-        "#{scheme || "https"}:#{url}"
+        "#{scheme || :https}:#{url}"
 
       true ->
         trimmed = String.trim(domain, "/")
