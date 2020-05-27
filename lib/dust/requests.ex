@@ -27,6 +27,7 @@ defmodule Dust.Requests do
     end
   end
 
+  ## Private helpers
   defp fetch(url, headers, options) do
     start_ms = System.monotonic_time(:millisecond)
     client = ClientState.new(url, headers, options)
@@ -41,7 +42,7 @@ defmodule Dust.Requests do
   end
 
   defp get_options(options) do
-    {proxy_config, options} = Keyword.pop(options, :proxy, [])
+    {proxy_config, options} = Keyword.pop(options, :proxy, nil)
 
     proxy =
       proxy_config
