@@ -11,9 +11,11 @@ defmodule Dust.Loaders.CSS do
   end
 
   def load(links, options) do
+    base_url = Keyword.get(options, :base_url)
     links
     |> Enum.map(&fetch(&1, options))
     |> Enum.map(&Task.await/1)
+    |> Enum.map(&resolve_url(base_url, &1))
   end
 
   def inject(links) do
@@ -40,7 +42,6 @@ defmodule Dust.Loaders.CSS do
     |> Floki.find(selector)
     |> Floki.attribute(attr)
     |> Enum.filter(&has_uri?/1)
-    |> Enum.map()
   end
 
   defp has_uri?(uri) do

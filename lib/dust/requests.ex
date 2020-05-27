@@ -14,10 +14,12 @@ defmodule Dust.Requests do
 
   @max_retries 3
   @wait_ms 100
-  def get(url, headers \\ [], options \\ [])
-
-  def get(url, headers, options) do
+  def get(url, options \\ []) do
     {max_retries, options} = Keyword.pop(options, :max_retries, @max_retries)
+    {headers, options} = Keyword.pop(options, :headers, [])
+    {proxy_config, options} =  Keyword.pop(options, :proxy, [])
+    proxy = Util.get_proxy(proxy_config)
+    options = Keyword.merge(options, Proxy.get_config(proxy))
 
     retry with: constant_backoff(@wait_ms) |> Stream.take(max_retries) do
       fetch(url, headers, options)

@@ -2,7 +2,10 @@ defmodule Dust.Loaders do
   @moduledoc false
   alias Dust.Loaders.CSS
 
+  @loaders [css: CSS]
+
   def package(result, http_client) do
+
     styles =
       result.content
       |> CSS.extract()

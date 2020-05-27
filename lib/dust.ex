@@ -6,8 +6,8 @@ defmodule Dust do
   alias Dust.Requests
   alias Dust.Requests.{Client, Result}
 
-  @spec get(url(), headers(), options()) :: {Client.t(), Result.t()}
-  def get(url, headers, options), do: Requests.get(url, headers, options)
+  @spec get(url(), options()) :: {Client.t(), Result.t()}
+  def get(url, options), do: Requests.get(url, options)
 
   # Dust.get(url, headers, loaders: [:css, :js, :json, :image]) => {:ok, embedded_html, result} | {:error, nil, result}
 end
