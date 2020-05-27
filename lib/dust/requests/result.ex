@@ -8,6 +8,7 @@ defmodule Dust.Requests.Result do
   @typedoc "Result struct"
   typedstruct do
     field :content, String.t() | nil
+    field :full_content, String.t() | nil
     field :status, non_neg_integer()
     field :duration, non_neg_integer()
     field :headers, map()
@@ -20,6 +21,7 @@ defmodule Dust.Requests.Result do
       :ok,
       %Result{
         content: response.body,
+        full_content: nil,
         status: response.status_code,
         duration: duration,
         headers: response.headers,
@@ -34,6 +36,7 @@ defmodule Dust.Requests.Result do
       :error,
       %Result{
         content: nil,
+        full_content: nil,
         status: 0,
         duration: duration,
         headers: [],
