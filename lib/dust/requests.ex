@@ -17,12 +17,9 @@ defmodule Dust.Requests do
   def get(url, options \\ []) do
     {max_retries, options} = Keyword.pop(options, :max_retries, @max_retries)
     {headers, options} = Keyword.pop(options, :headers, [])
-    {proxy_config, options} =  Keyword.pop(options, :proxy, [])
-    proxy = Util.get_proxy(proxy_config)
-    options = Keyword.merge(options, Proxy.get_config(proxy))
 
     retry with: constant_backoff(@wait_ms) |> Stream.take(max_retries) do
-      fetch(url, headers, options)
+      fetch(url, headers, get_options(options))
     after
       result -> result
     else
@@ -41,6 +38,17 @@ defmodule Dust.Requests do
       |> Result.from_request(Util.duration(start_ms))
 
     {status, result, client}
+  end
+
+  defp get_options(options) do
+    {proxy_config, options} = Keyword.pop(options, :proxy, [])
+
+    proxy =
+      proxy_config
+      |> Util.get_proxy()
+      |> Proxy.get_config()
+
+    Keyword.merge(options, proxy)
   end
 
   def full_url(url) do
