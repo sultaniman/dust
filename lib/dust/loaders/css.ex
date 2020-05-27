@@ -25,7 +25,7 @@ defmodule Dust.Loaders.CSS do
   ## Private
   defp fetch(url, options) do
     Task.async(fn ->
-      Requests.get(url, [], options)
+      Requests.get(url, options)
     end)
   end
 
