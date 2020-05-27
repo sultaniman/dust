@@ -9,8 +9,13 @@ defmodule Dust.Requests.Util do
     System.monotonic_time(:millisecond) - start_ms
   end
 
+  def get_proxy(nil), do: nil
   def get_proxy(proxy) when is_binary(proxy) do
-    %Proxy{address: proxy}
+    if String.trim(proxy) == "" do
+      nil
+    else
+      %Proxy{address: proxy}
+    end
   end
 
   def get_proxy(%Proxy{} = proxy) do
