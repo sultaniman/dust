@@ -4,11 +4,16 @@ defmodule Dust.Loaders do
 
   @loaders [css: CSS]
 
-  def package(result, http_client) do
+  def load(result, options \\ [], loaders \\ [])
+  def load(result, _options, loaders) do
+    loaders = get_loaders(loaders)
+    {loaders, result}
+  end
 
-    styles =
-      result.content
-      |> CSS.extract()
-      |> CSS.embed(result.content, client: http_client)
+  defp get_loaders([]), do: Keyword.values(@loaders)
+  defp get_loaders(loaders) do
+    loaders
+    |> Enum.filter(fn {k, _v} -> Keyword.has_key?(@loaders, k)end)
+    |> Enum.map(fn {_k, v} -> v end)
   end
 end
