@@ -10,23 +10,20 @@ defmodule Dust.Requests.Proxy do
   ```elixir
   # 2 fields with default values
   %Proxy{
-    follow_redirect: true
-    max_redirects: 2
+    address: "socks5://user:pass@awesome.host:port"
+    username: "user",
+    password: "pass"
   }
   ```
   """
   use TypedStruct
   alias __MODULE__
 
-  @max_redirects 2
-
   @typedoc "Proxy"
   typedstruct do
     field :address, String.t()
     field :username, String.t()
     field :password, String.t()
-    field :follow_redirect, boolean(), default: true
-    field :max_redirects, non_neg_integer(), default: @max_redirects
   end
 
   def get_config(nil), do: []
@@ -36,32 +33,19 @@ defmodule Dust.Requests.Proxy do
   """
   @spec get_config(Proxy.t()) :: Keyword.t()
   def get_config(%Proxy{} = proxy) do
-    if proxy != nil do
-      prepare_proxy(URI.parse(proxy.address), proxy)
-    else
-      []
-    end
+    prepare_proxy(URI.parse(proxy.address), proxy)
   end
 
   defp prepare_proxy(%URI{scheme: "socks5"} = uri, %Proxy{} = proxy) do
-    proxy
-    |> base_config()
+    []
     |> Keyword.merge(get_auth(:socks, proxy, uri))
     |> Keyword.put(:proxy, {:socks5, to_charlist(uri.host), uri.port})
   end
 
   defp prepare_proxy(%URI{} = uri, %Proxy{} = proxy) do
-    proxy
-    |> base_config()
+    []
     |> Keyword.merge(get_auth(:http, proxy, uri))
     |> Keyword.merge(proxy: to_charlist(uri.host))
-  end
-
-  defp base_config(%Proxy{} = proxy) do
-    [
-      follow_redirect: proxy.follow_redirect,
-      max_redirects: proxy.max_redirects
-    ]
   end
 
   defp get_auth(:socks, %Proxy{} = proxy, %URI{} = uri) do

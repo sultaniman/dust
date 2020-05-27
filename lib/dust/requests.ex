@@ -12,8 +12,10 @@ defmodule Dust.Requests do
   @type url() :: String.t()
   @type options() :: Keyword.t() | any()
 
+  @max_redirects 3
   @max_retries 3
   @wait_ms 100
+
   def get(url, options \\ []) do
     {max_retries, options} = Keyword.pop(options, :max_retries, @max_retries)
     {headers, options} = Keyword.pop(options, :headers, [])
@@ -43,13 +45,21 @@ defmodule Dust.Requests do
 
   defp get_options(options) do
     {proxy_config, options} = Keyword.pop(options, :proxy, nil)
+    {max_redirects, options} = Keyword.pop(options, :max_redirects, @max_redirects)
+    {follow_redirect, options} = Keyword.pop(options, :follow_redirect, true)
+    base_options = [
+      max_redirects: max_redirects,
+      follow_redirect: follow_redirect
+    ]
 
     proxy =
       proxy_config
       |> Util.get_proxy()
       |> Proxy.get_config()
 
-    Keyword.merge(options, proxy)
+    base_options
+    |> Keyword.merge(options)
+    |> Keyword.merge(proxy)
   end
 
   def full_url(url) do
