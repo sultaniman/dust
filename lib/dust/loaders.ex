@@ -1,6 +1,6 @@
-defmodule Dust.Transformer do
+defmodule Dust.Loaders do
   @moduledoc false
-  alias Dust.Transformer.CSS
+  alias Dust.Loaders.CSS
 
   def package(result, http_client) do
     styles =
