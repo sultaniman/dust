@@ -6,10 +6,9 @@
 <p align="center">
   <h1 align="center">Dust</h1>
   <p align="center">
-    <img width="150" height="150" src="https://raw.githubusercontent.com/hive-fleet/hive-state/develop/assets/logo.svg"/>
+    <img width="150" height="150" src="https://raw.githubusercontent.com/imanhodjaev/dust/develop/assets/dust.svg"/>
   </p>
 </p>
-
 
 ## Installation 💾
 
@@ -41,3 +40,7 @@ end
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/dust](https://hexdocs.pm/dust).
+
+## Assets 💄
+
+https://www.flaticon.com/free-icon/dust_867847
