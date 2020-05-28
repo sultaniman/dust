@@ -9,6 +9,6 @@ defmodule Dust do
   @spec get(url(), options()) :: {Client.t(), Result.t()}
   def get(url, options) do
     {:ok, result, client_state} = Requests.get(url, options)
-    Loaders.load(result, client_state)
+    Loaders.process(result, client_state)
   end
 end

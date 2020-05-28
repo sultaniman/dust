@@ -4,18 +4,23 @@ defmodule Dust.Loaders do
 
   @loaders [css: CSS]
 
-  def load(result, loaders \\ [], options \\ [])
-  def load(result, loaders, options) do
+  def process(result, loaders \\ [], options \\ [])
+  def process(result, loaders, options) do
     loaders = get_loaders(loaders)
     client_state = Keyword.get(options, :client_state, [])
 
-    # |> extract()
+    loaders
+    |> Enum.map(&extract(&1, result))
+    |> Enum.map(&load(&1, result, client_state))
     # |> fetch()
     # |> inject()
     {loaders, result}
   end
 
   defp extract(loader, result) do
+  end
+
+  defp load(loader, result, client) do
   end
 
   defp inject(loader, result) do
