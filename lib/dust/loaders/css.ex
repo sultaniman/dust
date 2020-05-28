@@ -3,19 +3,22 @@ defmodule Dust.Loaders.CSS do
   use Dust.Types
   alias Dust.Requests
 
-  @spec extract(content()) :: list(String.t())
-  def extract(content) do
-    with {:ok, document} <- Floki.parse_document(content) do
-      parse_style(document) ++ parse_link(document)
+  @spec extract(result()) :: list(String.t())
+  def extract(result) do
+    with {:ok, document} <- Floki.parse_document(result.content) do
+      {:css, parse_style(document) ++ parse_link(document)}
     end
   end
 
   def load(links, options) do
     base_url = Keyword.get(options, :base_url)
-    links
-    |> Enum.map(&fetch(&1, options))
-    |> Enum.map(&Task.await/1)
-    |> Enum.map(&resolve_url(base_url, &1))
+    result =
+      links
+      |> Enum.map(&fetch(&1, options))
+      |> Enum.map(&Task.await/1)
+      |> Enum.map(&resolve_url(base_url, &1))
+
+    {:css, result}
   end
 
   def inject(links) do
@@ -25,12 +28,14 @@ defmodule Dust.Loaders.CSS do
   ## Private
   defp fetch(url, options) do
     Task.async(fn ->
-      Requests.get(url, options)
+      {url, Requests.get(url, options)}
     end)
   end
 
   defp parse_link(document) do
-    find(document, "link[rel=stylesheet]", "href")
+    document
+    |> find("link[rel=stylesheet]", "href")
+    |> Enum.map(&resolve_url(base_url, &1))
   end
 
   defp parse_style(document) do
