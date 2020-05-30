@@ -1,4 +1,4 @@
-defprotocol Dust.Transformer.Stage do
+defprotocol Dust.Loaders.Stage do
   @moduledoc false
   @type content() :: binary()
   @type xpath() :: binary()

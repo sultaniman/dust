@@ -1,3 +1,3 @@
-defmodule Dust.Transformer.SVG do
+defmodule Dust.Loaders.SVG do
   @moduledoc false
 end

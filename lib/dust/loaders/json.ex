@@ -1,3 +1,3 @@
-defmodule Dust.Transformer.JSON do
+defmodule Dust.Loaders.JSON do
   @moduledoc false
 end

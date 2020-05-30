@@ -1,29 +1,23 @@
 defmodule Dust.Loaders do
   @moduledoc false
-  alias Dust.Loaders.CSS
+  alias Dust.Loaders.{CSS, JS}
+  alias Dust.Parsers
 
-  @loaders [css: CSS]
+  @loaders [css: CSS, js: JS]
 
   def process(result, loaders \\ [], options \\ [])
   def process(result, loaders, options) do
     loaders = get_loaders(loaders)
     client_state = Keyword.get(options, :client_state, [])
-
     loaders
-    |> Enum.map(&extract(&1, result))
-    |> Enum.map(&load(&1, result, client_state))
-    # |> fetch()
-    # |> inject()
-    {loaders, result}
+    |> Enum.map(&stack(&1, result))
   end
 
-  defp extract(loader, result) do
-  end
-
-  defp load(loader, result, client) do
-  end
-
-  defp inject(loader, result) do
+  defp stack(loader, result) do
+    result
+    |> loader.extract()
+    # |> loader.load()
+    # |> loader.inject()
   end
 
   defp get_loaders([]), do: Keyword.values(@loaders)

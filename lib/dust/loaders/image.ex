@@ -1,3 +1,3 @@
-defmodule Dust.Transformer.Image do
+defmodule Dust.Loaders.Image do
   @moduledoc false
 end
