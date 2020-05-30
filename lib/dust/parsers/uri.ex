@@ -25,14 +25,15 @@ defmodule Dust.Parsers.URI do
     # If relative path is an absolute url then
     # we need to return it else we need to parse
     # and return expanded url.
-    if abs_path?(uri) do
-      URI.to_string(uri)
-    else
-      expanded =
-        relative_path
-        |> Path.expand(Path.dirname(uri.path || "/"))
+    cond do
+      String.starts_with?(relative_path, "http") -> relative_path
+      String.starts_with?(relative_path, "//") -> "https://#{relative_path}"
+      true ->
+        expanded =
+          relative_path
+          |> Path.expand(Path.dirname(uri.path || "/"))
 
-      URI.to_string(%URI{uri | path: expanded})
+        URI.to_string(%URI{uri | path: expanded})
     end
   end
 
@@ -44,8 +45,4 @@ defmodule Dust.Parsers.URI do
       uri
     end
   end
-
-  defp abs_path?(%URI{scheme: nil, host: nil}), do: false
-  defp abs_path?(%URI{scheme: nil}), do: false
-  defp abs_path?(%URI{scheme: _}), do: true
 end
