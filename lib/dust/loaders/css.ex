@@ -14,9 +14,9 @@ defmodule Dust.Loaders.CSS do
   def load(links, options) do
     base_url = Keyword.get(options, :base_url)
     links
+    |> Enum.map(&Parsers.URI.expand(base_url, &1))
     |> Enum.map(&fetch(&1, options))
     |> Enum.map(&Task.await/1)
-    |> Enum.map(&Parsers.URI.expand(base_url, &1))
   end
 
   ## Private
