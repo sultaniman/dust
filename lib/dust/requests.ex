@@ -63,8 +63,9 @@ defmodule Dust.Requests do
   end
 
   def full_url(url) do
-    with %{scheme: scheme, host: host, path: path} <- URI.parse(url) do
-      "#{scheme || :https}://#{host || path}"
+    case URI.parse(url) do
+      %URI{scheme: nil} = uri -> %URI{uri | scheme: "https"} |> URI.to_string()
+      uri -> URI.to_string(uri)
     end
   end
 end
