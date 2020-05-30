@@ -7,16 +7,16 @@ defmodule Dust.Loaders do
 
   def process(result, loaders \\ [], options \\ [])
   def process(result, loaders, options) do
-    loaders = get_loaders(loaders)
-    client_state = Keyword.get(options, :client_state, [])
     loaders
-    |> Enum.map(&stack(&1, result))
+    |> get_loaders()
+    |> Enum.map(&stack(&1, result, options))
   end
 
-  defp stack(loader, result) do
+  defp stack(loader, result, options) do
+    client_state = Keyword.get(options, :client_state, [])
     result
     |> loader.extract()
-    # |> loader.load()
+    |> loader.load(client: client_state, base_url: result.original_request.url)
     # |> loader.inject()
   end
 
