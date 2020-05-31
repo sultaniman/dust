@@ -19,6 +19,19 @@ defmodule Dust.Loaders.CSS do
     |> Enum.map(&Task.await/1)
   end
 
+  def template(results) do
+    {:css, Enum.map(results, &render/1)}
+  end
+
+  defp render({style_url, {:ok, style_result, _client}}) do
+    """
+    <style>
+    /*Style source: #{style_url}*/
+    #{style_result.content}
+    </style>
+    """
+  end
+
   ## Private
   defp fetch(url, options) do
     Task.async(fn ->

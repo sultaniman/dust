@@ -8,6 +8,7 @@ defmodule Dust.Loaders.JS do
     []
   end
 
-  def inject(links) do
+  def template(results) do
+    {:js, []}
   end
 end
