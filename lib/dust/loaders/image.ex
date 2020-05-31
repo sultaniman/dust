@@ -4,4 +4,15 @@ defmodule Dust.Loaders.Image do
   for svg `data:image/svg+xml,URI_ENCODED_SVG`
   Ignore already embedded `data:image`
   """
+  def extract(result) do
+    []
+  end
+
+  def load(links, options) do
+    []
+  end
+
+  def template(results) do
+    {:image, []}
+  end
 end
