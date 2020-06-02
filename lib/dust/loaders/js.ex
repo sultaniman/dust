@@ -8,7 +8,7 @@ defmodule Dust.Loaders.JS do
     []
   end
 
-  def template(results, base_url) do
+  def template(results) do
     {:js, []}
   end
 end

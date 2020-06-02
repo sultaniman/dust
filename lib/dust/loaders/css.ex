@@ -20,11 +20,11 @@ defmodule Dust.Loaders.CSS do
     |> Enum.map(&Task.await/1)
   end
 
-  def template(results, base_url) do
-    {:css, Enum.map(results, &render(&1, base_url))}
+  def template(results) do
+    {:css, Enum.map(results, &render/1)}
   end
 
-  defp render({style_url, {:ok, style_result, client}}, base_url) do
+  defp render({style_url, {:ok, style_result, client}}) do
     content = Inliner.inline(style_result.content, client)
     """
     <style>

@@ -18,7 +18,7 @@ defmodule Dust.Loaders do
       |> Enum.join("\n")
 
     full_content = String.replace(result.content, "</html>", "#{assets}</html>")
-    # %{result | full_content: full_content}
+    %{result | full_content: full_content}
   end
 
   defp stack(loader, result, options) do
@@ -26,7 +26,7 @@ defmodule Dust.Loaders do
     result
     |> loader.extract()
     |> loader.load(client: client_state, base_url: result.original_request.url)
-    |> loader.template(result.original_request.url)
+    |> loader.template()
   end
 
   defp get_loaders([]), do: Keyword.values(@loaders)
