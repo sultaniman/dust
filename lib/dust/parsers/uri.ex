@@ -26,8 +26,12 @@ defmodule Dust.Parsers.URI do
     # we need to return it else we need to parse
     # and return expanded url.
     cond do
-      String.starts_with?(relative_path, "http") -> relative_path
-      String.starts_with?(relative_path, "//") -> "https://#{relative_path}"
+      String.starts_with?(relative_path, "http") ->
+        relative_path
+
+      String.starts_with?(relative_path, "//") ->
+        "https://#{relative_path}"
+
       true ->
         expanded =
           relative_path
@@ -37,8 +41,19 @@ defmodule Dust.Parsers.URI do
     end
   end
 
+  def get_base_url(uri) do
+    url = URI.parse(uri)
+    URI.to_string(%URI{
+      scheme: url.scheme || "https",
+      host: url.host,
+      port: url.port,
+      userinfo: url.userinfo
+    })
+  end
+
   defp get_uri(url) do
     uri = URI.parse(url)
+
     if is_nil(uri.scheme) do
       %URI{uri | scheme: "https"}
     else
