@@ -16,6 +16,7 @@ defmodule Dust.Requests do
   @max_retries 3
   @wait_ms 100
 
+  @spec get(url(), options()) :: {:ok, Result.t()} | {:error, Result.t()}
   def get(url, options \\ []) do
     {max_retries, options} = Keyword.pop(options, :max_retries, @max_retries)
     {headers, options} = Keyword.pop(options, :headers, [])

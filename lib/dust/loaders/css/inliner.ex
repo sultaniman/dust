@@ -1,11 +1,23 @@
 defmodule Dust.Loaders.CSS.Inliner do
-  @moduledoc false
+  @moduledoc """
+  This module works with CSS and provides
+  API to inline all images as base64 encoded
+  values, this however does not include fonts.
+  """
   alias ExImageInfo, as: Image
   alias Dust.Parsers
   alias Dust.Requests
+  alias Dust.Requests.ClientState
 
   @css_url_regex ~r/url\(['"]?(?<uri>.*?)['"]?\)/
 
+  @type css_content() :: binary()
+
+  @doc """
+  Extract all `url(…)` values, fetch, base64 encode and inline.
+  Fonts however are not included.
+  """
+  @spec inline(css_content(), ClientState.t()) :: binary()
   def inline(css_content, client) do
     base_url = Parsers.URI.get_base_url(client.full_url)
 
