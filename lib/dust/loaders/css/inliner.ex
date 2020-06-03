@@ -5,7 +5,6 @@ defmodule Dust.Loaders.CSS.Inliner do
   alias Dust.Requests
 
   @css_url_regex ~r/url\(['"]?(?<uri>.*?)['"]?\)/
-  @tag "data:image"
 
   def inline(css_content, client) do
     base_url = Parsers.URI.get_base_url(client.full_url)
@@ -14,7 +13,8 @@ defmodule Dust.Loaders.CSS.Inliner do
       @css_url_regex
       |> Regex.scan(css_content)
       |> Enum.map(&Enum.at(&1, 1))
-      |> Enum.reject(&String.starts_with?(&1, @tag))
+      |> Enum.reject(&is_data_image?/1)
+      |> Enum.reject(&is_font?/1)
       |> Enum.map(&{&1, Parsers.URI.expand(base_url, &1)})
       |> Enum.map(&fetch(&1, client.options))
       |> Enum.map(&Task.await/1)
@@ -32,9 +32,6 @@ defmodule Dust.Loaders.CSS.Inliner do
 
   defp replace({url, {:ok, result, _client}}, inline_to) do
     cond do
-      is_font?(url) ->
-        inline_to
-
       String.ends_with?(url, ".svg") ->
         String.replace(
           inline_to,
@@ -58,6 +55,10 @@ defmodule Dust.Loaders.CSS.Inliner do
   defp encode(asset) do
     {mime, _variant} = Image.type(asset)
     "data:#{mime};base64,#{Base.encode64(asset)}"
+  end
+
+  defp is_data_image?(url) do
+    String.starts_with?(url, "data:image")
   end
 
   defp is_font?(url) do
