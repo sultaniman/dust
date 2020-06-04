@@ -3,24 +3,25 @@ defmodule Dust.Parsers.CSS do
   Parse document and returl all links/URIs to
   styles with absolute urls.
   """
-  alias Dust.Dom
 
   @spec parse(Floki.html_tree() | Floki.html_tag()) :: list(String.t())
   def parse(document) do
-    links =
+    scripts_preloaded =
       document
-      |> Dom.find("link[rel=stylesheet]", "href")
-
-    links_preloaded =
-      document
-      |> Dom.find("link[as=style]", "href")
+      |> find("link[as=script]", "href")
 
     styles =
       document
-      |> Dom.find("style", "src")
+      |> find("script", "src")
 
-    links ++ links_preloaded ++ styles
+    scripts_preloaded ++ styles
     |> MapSet.new()
     |> MapSet.to_list()
+  end
+
+  defp find(document, selector, attr) do
+    document
+    |> Floki.find(selector)
+    |> Floki.attribute(attr)
   end
 end
