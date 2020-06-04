@@ -39,7 +39,7 @@ defmodule Dust.Requests do
 
     {status, result} =
       url
-      |> Parsers.URI.get_base_url()
+      |> Parsers.URI.normalize()
       |> HTTPoison.get(headers, options)
       |> Result.from_request(Util.duration(start_ms))
 

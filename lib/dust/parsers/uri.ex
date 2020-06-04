@@ -21,7 +21,7 @@ defmodule Dust.Parsers.URI do
   """
   @spec expand(String.t(), String.t()) :: String.t()
   def expand(request_url, relative_path) do
-    uri = get_uri(request_url)
+    uri = normalize(request_url)
     # If relative path is an absolute url then
     # we need to return it else we need to parse
     # and return expanded url.
@@ -52,13 +52,22 @@ defmodule Dust.Parsers.URI do
     })
   end
 
-  defp get_uri(url) do
+  def normalize(url, as_string \\ false)
+  def normalize(url, as_string) do
     uri = URI.parse(url)
 
+    url_to_string = fn uri ->
+      if as_string do
+        URI.to_string(uri)
+      else
+        uri
+      end
+    end
+
     if is_nil(uri.scheme) do
-      %URI{uri | scheme: "https"}
+      url_to_string.(%URI{uri | scheme: "https"})
     else
-      uri
+      url_to_string.(uri)
     end
   end
 end

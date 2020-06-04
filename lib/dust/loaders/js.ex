@@ -22,7 +22,7 @@ defmodule Dust.Loaders.JS do
   defp render({script_url, {:ok, script_result, _client}}) do
     """
     <script type="text/javascript" charset="utf-8">
-    /*script source: #{script_url}*/
+    /*Script source: #{script_url}*/
     #{script_result.content}
     </script>
     """
