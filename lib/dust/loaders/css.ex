@@ -39,7 +39,7 @@ defmodule Dust.Loaders.CSS do
 
   defp render({style_url, {:error, style_result, _}}) do
     """
-    <!--Failed to load: #{style_url}, reason: #{inspect(style_result.error)}-->
+    <!--Failed to load stylesheet: #{style_url}, reason: #{inspect(style_result.error)}-->
     """
   end
 end
