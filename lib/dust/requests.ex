@@ -12,12 +12,13 @@ defmodule Dust.Requests do
 
   @type url() :: String.t()
   @type options() :: Keyword.t() | any()
+  @type result() :: {:ok, Result.t(), ClientState.t()} | {:error, Result.t(), ClientState.t()}
 
   @max_redirects 3
   @max_retries 3
   @wait_ms 100
 
-  @spec get(url(), options()) :: {:ok, Result.t()} | {:error, Result.t()}
+  @spec get(url(), options()) :: result()
   def get(url, options \\ []) do
     {max_retries, options} = Keyword.pop(options, :max_retries, @max_retries)
     {headers, options} = Keyword.pop(options, :headers, [])
