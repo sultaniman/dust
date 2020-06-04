@@ -9,15 +9,15 @@ defmodule Dust.Parsers.CSS do
   def parse(document) do
     links =
       document
-      |> Dom.find("link[rel=stylesheet]", "href")
+      |> Dom.attr("link[rel=stylesheet]", "href")
 
     links_preloaded =
       document
-      |> Dom.find("link[as=style]", "href")
+      |> Dom.attr("link[as=style]", "href")
 
     styles =
       document
-      |> Dom.find("style", "src")
+      |> Dom.attr("style", "src")
 
     links ++ links_preloaded ++ styles
     |> MapSet.new()
