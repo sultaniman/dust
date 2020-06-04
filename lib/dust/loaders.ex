@@ -58,7 +58,7 @@ defmodule Dust.Loaders do
     result
     |> loader.extract()
     |> load(client: client_state, base_url: result.original_request.url)
-    |> loader.template()
+    |> loader.inline()
   end
 
   defp fetch(url, options) do

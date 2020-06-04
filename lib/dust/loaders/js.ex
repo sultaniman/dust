@@ -14,8 +14,8 @@ defmodule Dust.Loaders.JS do
     end
   end
 
-  @spec template(result_list()) :: {:js, list(String.t())}
-  def template(results) do
+  @spec inline(result_list()) :: {:js, list(String.t())}
+  def inline(results) do
     {:js, []}
   end
 end

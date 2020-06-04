@@ -41,6 +41,7 @@ defmodule Dust.Parsers.URI do
     end
   end
 
+  @spec get_base_url(String.t()) :: URI.t() | any()
   def get_base_url(uri) do
     url = URI.parse(uri)
     URI.to_string(%URI{

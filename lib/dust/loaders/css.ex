@@ -22,8 +22,8 @@ defmodule Dust.Loaders.CSS do
     end
   end
 
-  @spec template(result_list()) :: {:css, list(String.t())}
-  def template(results) do
+  @spec inline(result_list()) :: {:css, list(String.t())}
+  def inline(results) do
     {:css, Enum.map(results, &render/1)}
   end
 
