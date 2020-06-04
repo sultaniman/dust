@@ -7,15 +7,10 @@ defmodule Dust.Parsers.JS do
 
   @spec parse(Floki.html_tree() | Floki.html_tag()) :: list(String.t())
   def parse(document) do
-    scripts_preloaded =
-      document
-      |> Dom.attr("link[as=script]", "href")
+    scripts_preloaded = Dom.attr(document, "link[as=script]", "href")
+    scripts = Dom.attr(document, "script", "src")
 
-    styles =
-      document
-      |> Dom.attr("script", "src")
-
-    scripts_preloaded ++ styles
+    scripts_preloaded ++ scripts
     |> MapSet.new()
     |> MapSet.to_list()
   end

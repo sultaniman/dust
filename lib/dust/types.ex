@@ -6,18 +6,9 @@ defmodule Dust.Types do
     quote do
       # Request related types
       @type url() :: String.t()
-      @type content() :: String.t()
-      @type links() :: list(String.t())
-      @type resource() :: map()
-      @type value() :: binary()
-      @type headers() :: keyword() | map() | nil
-
-      # For DOM elements
-      @type xpath() :: String.to()
-      @type pairs() :: list({xpath(), value()})
-
-      # General purpose types
-      @type options() :: Keyword.t() | any()
+      @type links() :: list(url())
+      @type result() :: {:ok, Requests.Result.t()} | {:error, Requests.Result.t()}
+      @type result_list() :: list({url(), result()})
     end
   end
 end
