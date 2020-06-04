@@ -2,6 +2,7 @@ defmodule Dust.Requests do
   @moduledoc false
   use Retry
 
+  alias Dust.Parsers
   alias Dust.Requests.{
     ClientState,
     Proxy,
@@ -37,7 +38,7 @@ defmodule Dust.Requests do
 
     {status, result} =
       url
-      |> full_url()
+      |> Parsers.URI.get_base_url()
       |> HTTPoison.get(headers, options)
       |> Result.from_request(Util.duration(start_ms))
 
@@ -61,12 +62,5 @@ defmodule Dust.Requests do
     base_options
     |> Keyword.merge(options)
     |> Keyword.merge(proxy)
-  end
-
-  def full_url(url) do
-    case URI.parse(url) do
-      %URI{scheme: nil} = uri -> %URI{uri | scheme: "https"} |> URI.to_string()
-      uri -> URI.to_string(uri)
-    end
   end
 end

@@ -53,18 +53,18 @@ defmodule Dust.Loaders do
     |> Enum.map(&Task.await/1)
   end
 
-  defp fetch(url, options) do
-    Task.async(fn ->
-      {url, Requests.get(url, options)}
-    end)
-  end
-
   defp stack(loader, result, options) do
-    client_state = Keyword.get(options, :client_state, [])
+    {client_state, _options} = Keyword.pop(options, :client_state, [])
     result
     |> loader.extract()
     |> load(client: client_state, base_url: result.original_request.url)
     |> loader.template()
+  end
+
+  defp fetch(url, options) do
+    Task.async(fn ->
+      {url, Requests.get(url, options)}
+    end)
   end
 
   defp get_loaders([]), do: Keyword.values(@loaders)
