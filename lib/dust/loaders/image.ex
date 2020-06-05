@@ -4,15 +4,11 @@ defmodule Dust.Loaders.Image do
   for svg `data:image/svg+xml,URI_ENCODED_SVG`
   Ignore already embedded `data:image`
   """
+  alias Dust.Parsers
+
   def extract(result) do
-    []
-  end
-
-  def load(links, options) do
-    []
-  end
-
-  def template(results) do
-    {:image, []}
+    with {:ok, document} <- Floki.parse_document(result.content) do
+      Parsers.image(document)
+    end
   end
 end

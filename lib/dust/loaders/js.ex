@@ -10,7 +10,7 @@ defmodule Dust.Loaders.JS do
   @spec extract(Result.t()) :: list(String.t())
   def extract(result) do
     with {:ok, document} <- Floki.parse_document(result.content) do
-      Parsers.js(document, result.original_request)
+      Parsers.js(document)
     end
   end
 
