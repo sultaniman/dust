@@ -70,4 +70,19 @@ defmodule Dust.Parsers.URI do
       url_to_string.(uri)
     end
   end
+
+  def is_font?(url) do
+    (
+      String.ends_with?(url, "ttf") ||
+      String.ends_with?(url, "woff") ||
+      String.ends_with?(url, "woff2") ||
+      String.ends_with?(url, "otf") ||
+      String.ends_with?(url, "eot") ||
+      String.ends_with?(url, "ttc")
+    )
+  end
+
+  def is_data_url?(url) do
+    String.starts_with?(url, "data:image")
+  end
 end
