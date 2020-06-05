@@ -14,6 +14,7 @@ defmodule Dust.Requests.Result do
     field :headers, map()
     field :error, HTTPoison.Error.t() | nil
     field :original_request, HTTPoison.Response.t() | nil
+    field :assets, list({atom(), Result.t()}) | []
   end
 
   def from_request({:ok, %HTTPoison.Response{} = response}, duration) do
@@ -26,7 +27,8 @@ defmodule Dust.Requests.Result do
         duration: duration,
         headers: response.headers,
         error: nil,
-        original_request: response.request
+        original_request: response.request,
+        assets: []
       }
     }
   end
@@ -41,7 +43,8 @@ defmodule Dust.Requests.Result do
         duration: duration,
         headers: [],
         error: reason,
-        original_request: nil
+        original_request: nil,
+        assets: []
       }
     }
   end

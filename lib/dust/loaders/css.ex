@@ -12,8 +12,11 @@ defmodule Dust.Loaders.CSS do
 
   @type url() :: String.t()
   @type links() :: list(url())
+  @type page() :: String.t()
   @type result() :: {:ok, Requests.Result.t()} | {:error, Requests.Result.t()}
   @type result_list() :: list({url(), result()})
+
+  def tag, do: :css
 
   @spec extract(Result.t()) :: list(String.t())
   def extract(result) do
@@ -22,9 +25,14 @@ defmodule Dust.Loaders.CSS do
     end
   end
 
-  @spec inline(result_list()) :: {:css, list(String.t())}
-  def inline(results) do
-    {:css, Enum.map(results, &render/1)}
+  @spec inline(result_list(), page()) :: String.t()
+  def inline(results, page) do
+    styles =
+      results
+      |> Enum.map(&render/1)
+      |> Enum.join("\n")
+
+    String.replace(page, "</html>", "#{styles}</html>")
   end
 
   defp render({style_url, {:ok, style_result, client}}) do

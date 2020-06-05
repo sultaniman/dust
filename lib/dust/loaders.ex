@@ -1,6 +1,6 @@
 defmodule Dust.Loaders do
   @moduledoc false
-  alias Dust.Loaders.{CSS, JS}
+  alias Dust.Loaders.{CSS, Image, JS}
   alias Dust.{Parsers, Requests}
 
   @type url() :: String.t()
@@ -8,23 +8,21 @@ defmodule Dust.Loaders do
   @type result() :: {:ok, Requests.Result.t()} | {:error, Requests.Result.t()}
   @type result_list() :: list({url(), result()})
 
-  @loaders [css: CSS, js: JS]
+  @loaders [css: CSS, image: Image, js: JS]
 
   def process(result, loaders \\ [], options \\ [])
   def process(result, loaders, options) do
-    loaders = get_loaders(loaders)
-    sources =
+    assets =
       loaders
+      |> get_loaders()
       |> Enum.map(&stack(&1, result, options))
 
-    assets =
-      @loaders
-      |> Keyword.keys()
-      |> Enum.map(&Keyword.get(sources, &1, []))
-      |> Enum.join("\n")
+    full_content = Enum.reduce(assets, result.content, fn {name, assets}, page ->
+      loader = Keyword.get(@loaders, name)
+      loader.inline(assets, page)
+    end)
 
-    full_content = String.replace(result.content, "</html>", "#{assets}</html>")
-    %{result | full_content: full_content}
+    %{result | full_content: full_content, assets: assets}
   end
 
   @doc """
@@ -55,10 +53,17 @@ defmodule Dust.Loaders do
 
   defp stack(loader, result, options) do
     {client_state, _options} = Keyword.pop(options, :client_state, [])
-    result
-    |> loader.extract()
-    |> load(client: client_state, base_url: result.original_request.url)
-    |> loader.inline()
+    options = [
+      client: client_state,
+      base_url: result.original_request.url
+    ]
+
+    {
+      loader.tag,
+      result
+      |> loader.extract()
+      |> load(options)
+    }
   end
 
   defp fetch(url, options) do

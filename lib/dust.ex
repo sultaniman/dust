@@ -8,5 +8,12 @@ defmodule Dust do
   def get(url, options) do
     {:ok, result, client_state} = Requests.get(url, options)
     Loaders.process(result, [], client: client_state)
+    # :ok
+  end
+
+  def persist(path, contents) do
+    {:ok, file} = File.open(path, [:write])
+    IO.binwrite(file, contents)
+    File.close(file)
   end
 end

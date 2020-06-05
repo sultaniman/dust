@@ -4,8 +4,11 @@ defmodule Dust.Loaders.JS do
 
   @type url() :: String.t()
   @type links() :: list(url())
+  @type page() :: String.t()
   @type result() :: {:ok, Requests.Result.t()} | {:error, Requests.Result.t()}
   @type result_list() :: list({url(), result()})
+
+  def tag, do: :js
 
   @spec extract(Result.t()) :: list(String.t())
   def extract(result) do
@@ -14,9 +17,14 @@ defmodule Dust.Loaders.JS do
     end
   end
 
-  @spec inline(result_list()) :: {:js, list(String.t())}
-  def inline(results) do
-    {:js, Enum.map(results, &render/1)}
+  @spec inline(result_list(), page()) :: String.t()
+  def inline(results, page) do
+    scripts =
+      results
+      |> Enum.map(&render/1)
+      |> Enum.join("\n")
+
+    String.replace(page, "</html>", "#{scripts}</html>")
   end
 
   defp render({script_url, {:ok, script_result, _client}}) do
