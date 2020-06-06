@@ -37,6 +37,7 @@ defmodule Dust.Loaders.CSS do
 
   defp render({style_url, {:ok, style_result, client}}) do
     content = Inliner.inline(style_result.content, client)
+
     """
     <style>
     /*Style source: #{style_url}*/

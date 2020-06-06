@@ -10,7 +10,7 @@ defmodule Dust.Parsers.JS do
     scripts_preloaded = Dom.attr(document, "link[as=script]", "href")
     scripts = Dom.attr(document, "script", "src")
 
-    scripts_preloaded ++ scripts
+    (scripts_preloaded ++ scripts)
     |> MapSet.new()
     |> MapSet.to_list()
   end

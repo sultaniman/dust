@@ -48,7 +48,7 @@ defmodule Dust.Loaders.Image do
   end
 
   defp get_image({_image_url, {:error, _image_result, _client}}) do
-    Dom.error_image
+    Dom.error_image()
   end
 
   defp get_client(results) do
@@ -94,6 +94,7 @@ defmodule Dust.Loaders.Image do
     case Image.type(asset) do
       {mime, _variant} ->
         "data:#{mime};base64,#{Base.encode64(asset)}"
+
       _ ->
         @error_image
     end

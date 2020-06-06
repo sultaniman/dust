@@ -44,6 +44,7 @@ defmodule Dust.Parsers.URI do
   @spec get_base_url(String.t()) :: URI.t() | any()
   def get_base_url(uri) do
     url = URI.parse(uri)
+
     URI.to_string(%URI{
       scheme: url.scheme || "https",
       host: url.host,
@@ -53,6 +54,7 @@ defmodule Dust.Parsers.URI do
   end
 
   def normalize(url, as_string \\ false)
+
   def normalize(url, as_string) do
     uri = URI.parse(url)
 
@@ -76,14 +78,12 @@ defmodule Dust.Parsers.URI do
   end
 
   def is_font?(url) do
-    (
-      String.ends_with?(url, "ttf") ||
+    String.ends_with?(url, "ttf") ||
       String.ends_with?(url, "woff") ||
       String.ends_with?(url, "woff2") ||
       String.ends_with?(url, "otf") ||
       String.ends_with?(url, "eot") ||
       String.ends_with?(url, "ttc")
-    )
   end
 
   def is_data_url?(url) do

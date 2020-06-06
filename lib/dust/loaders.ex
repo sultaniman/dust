@@ -11,16 +11,18 @@ defmodule Dust.Loaders do
   @loaders [css: CSS, image: Image, js: JS]
 
   def process(result, loaders \\ [], options \\ [])
+
   def process(result, loaders, options) do
     assets =
       loaders
       |> get_loaders()
       |> Enum.map(&stack(&1, result, options))
 
-    full_content = Enum.reduce(assets, result.content, fn {name, assets}, page ->
-      loader = Keyword.get(@loaders, name)
-      loader.inline(assets, page)
-    end)
+    full_content =
+      Enum.reduce(assets, result.content, fn {name, assets}, page ->
+        loader = Keyword.get(@loaders, name)
+        loader.inline(assets, page)
+      end)
 
     %{result | full_content: full_content, assets: assets}
   end
@@ -45,6 +47,7 @@ defmodule Dust.Loaders do
   @spec load(links(), keyword()) :: result_list()
   def load(links, options) do
     base_url = Keyword.get(options, :base_url)
+
     links
     |> Enum.map(&Parsers.URI.expand(base_url, &1))
     |> Enum.map(&fetch(&1, options))
@@ -53,6 +56,7 @@ defmodule Dust.Loaders do
 
   defp stack(loader, result, options) do
     {client_state, _options} = Keyword.pop(options, :client_state, [])
+
     options = [
       client: client_state,
       base_url: result.original_request.url
@@ -73,6 +77,7 @@ defmodule Dust.Loaders do
   end
 
   defp get_loaders([]), do: Keyword.values(@loaders)
+
   defp get_loaders(loaders) do
     loaders
     |> Enum.filter(fn {k, _v} -> Keyword.has_key?(@loaders, k) end)

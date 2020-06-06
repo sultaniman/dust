@@ -69,7 +69,7 @@ defmodule Dust.Loaders.CSS.Inliner do
   defp encode(asset) do
     case Image.type(asset) do
       {mime, _variant} -> "data:#{mime};base64,#{Base.encode64(asset)}"
-      _ -> Dom.error_image
+      _ -> Dom.error_image()
     end
   end
 end

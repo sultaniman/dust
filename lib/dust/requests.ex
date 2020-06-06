@@ -3,6 +3,7 @@ defmodule Dust.Requests do
   use Retry
 
   alias Dust.Parsers
+
   alias Dust.Requests.{
     ClientState,
     Proxy,
@@ -50,6 +51,7 @@ defmodule Dust.Requests do
     {proxy_config, options} = Keyword.pop(options, :proxy, nil)
     {max_redirects, options} = Keyword.pop(options, :max_redirects, @max_redirects)
     {follow_redirect, options} = Keyword.pop(options, :follow_redirect, true)
+
     base_options = [
       max_redirects: max_redirects,
       follow_redirect: follow_redirect

@@ -10,6 +10,7 @@ defmodule Dust.Requests.Util do
   end
 
   def get_proxy(nil), do: nil
+
   def get_proxy(proxy) when is_binary(proxy) do
     if String.trim(proxy) == "" do
       nil

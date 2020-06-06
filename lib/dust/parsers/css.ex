@@ -19,7 +19,7 @@ defmodule Dust.Parsers.CSS do
       document
       |> Dom.attr("style", "src")
 
-    links ++ links_preloaded ++ styles
+    (links ++ links_preloaded ++ styles)
     |> MapSet.new()
     |> MapSet.to_list()
   end
