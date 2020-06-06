@@ -1,7 +1,7 @@
-![Build Status](https://img.shields.io/travis/com/hive-fleet/hive-state/develop?style=for-the-badge)
-![Coverage](https://img.shields.io/coveralls/github/hive-fleet/hive-state/develop?style=for-the-badge)
+![Build Status](https://img.shields.io/travis/com/imanhodjaev/dust/develop?style=for-the-badge)
+![Coverage](https://img.shields.io/coveralls/github/imanhodjaev/dust/develop?style=for-the-badge)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg?style=for-the-badge)](https://houndci.com)
-[![Hex.pm](https://img.shields.io/hexpm/l/hive?color=ff69b4&label=License&style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
+[![Hex.pm](https://img.shields.io/hexpm/l/dust?color=ff69b4&label=License&style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
 
 <p align="center">
   <h1 align="center">Dust</h1>
