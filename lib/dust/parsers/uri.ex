@@ -79,11 +79,11 @@ defmodule Dust.Parsers.URI do
 
   def is_font?(url) do
     String.ends_with?(url, "ttf") ||
-      String.ends_with?(url, "woff") ||
-      String.ends_with?(url, "woff2") ||
-      String.ends_with?(url, "otf") ||
-      String.ends_with?(url, "eot") ||
-      String.ends_with?(url, "ttc")
+    String.ends_with?(url, "woff") ||
+    String.ends_with?(url, "woff2") ||
+    String.ends_with?(url, "otf") ||
+    String.ends_with?(url, "eot") ||
+    String.ends_with?(url, "ttc")
   end
 
   def is_data_url?(url) do
