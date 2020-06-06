@@ -71,6 +71,10 @@ defmodule Dust.Parsers.URI do
     end
   end
 
+  def is_empty?(url) do
+    is_nil(url) || String.trim(url) == ""
+  end
+
   def is_font?(url) do
     (
       String.ends_with?(url, "ttf") ||
