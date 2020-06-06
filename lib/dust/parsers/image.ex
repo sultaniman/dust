@@ -12,6 +12,7 @@ defmodule Dust.Parsers.Image do
     pictures = Dom.attr(document, "picture > source", "srcset")
 
     (imgs ++ pictures)
+    |> Enum.reject(&Parsers.URI.is_empty?/1)
     |> Enum.reject(&Parsers.URI.is_data_url?/1)
     |> Enum.reject(&Parsers.URI.is_font?/1)
     |> MapSet.new()

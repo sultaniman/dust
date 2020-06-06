@@ -16,7 +16,8 @@ defmodule Dust.Loaders do
     assets =
       loaders
       |> get_loaders()
-      |> Enum.map(&stack(&1, result, options))
+      |> Enum.map(&extract_async(&1, result, options))
+      |> Enum.map(&Task.await/1)
 
     full_content =
       Enum.reduce(assets, result.content, fn {name, assets}, page ->
@@ -24,7 +25,8 @@ defmodule Dust.Loaders do
         loader.inline(assets, page)
       end)
 
-    %{result | full_content: full_content, assets: assets}
+    # NOTE: should we include assets in the final result?
+    %{result | full_content: full_content}
   end
 
   @doc """
@@ -54,7 +56,7 @@ defmodule Dust.Loaders do
     |> Enum.map(&Task.await/1)
   end
 
-  defp stack(loader, result, options) do
+  defp extract(loader, result, options) do
     {client_state, _options} = Keyword.pop(options, :client_state, [])
 
     options = [
@@ -68,6 +70,12 @@ defmodule Dust.Loaders do
       |> loader.extract()
       |> load(options)
     }
+  end
+
+  defp extract_async(loader, result, options) do
+    Task.async(fn ->
+      extract(loader, result, options)
+    end)
   end
 
   defp fetch(url, options) do
