@@ -32,14 +32,10 @@ defmodule Dust.Loaders.Image do
       |> Enum.map(&get_image/1)
 
     # Note: it is N^2 by time complexity
-    remapped =
-      %Result{content: page}
-      |> extract()
-      |> Enum.map(&remap_urls(&1, images))
-
-    Enum.reduce(remapped, page, fn image, replaced ->
-      replace(image, replaced)
-    end)
+    %Result{content: page}
+    |> extract()
+    |> Enum.map(&remap_urls(&1, images))
+    |> Enum.reduce(page, &replace(&1, &2))
     |> Inliner.inline(get_client(results))
   end
 
