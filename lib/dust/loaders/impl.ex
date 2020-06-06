@@ -1,7 +1,24 @@
 defmodule Dust.Loaders.Stage.Impl do
-  alias Dust.Loaders.{CSS, Stage}
+  @moduledoc false
+  alias Dust.Loaders.{
+    CSS,
+    Image,
+    JS,
+    Stage
+  }
 
   defimpl Stage, for: CSS do
     def extract(content), do: CSS.extract(content)
+    def inline(results, page), do: CSS.inline(results, page)
+  end
+
+  defimpl Stage, for: Image do
+    def extract(content), do: Image.extract(content)
+    def inline(results, page), do: Image.inline(results, page)
+  end
+
+  defimpl Stage, for: JS do
+    def extract(content), do: JS.extract(content)
+    def inline(results, page), do: JS.inline(results, page)
   end
 end
