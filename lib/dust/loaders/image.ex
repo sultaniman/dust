@@ -1,8 +1,10 @@
 defmodule Dust.Loaders.Image do
   @moduledoc """
-  Embed with mime `data:image/<MIME>;base64,BASE64` for binary formats
-  for svg `data:image/svg+xml,URI_ENCODED_SVG`
-  Ignore already embedded `data:image`
+  Image loader is responsible to
+
+    1. Extract and resolve all images,
+    2. Fetch all image assets,
+    3. Inline images as base64 encoded values
   """
   alias ExImageInfo, as: Image
   alias Dust.Dom
@@ -92,7 +94,7 @@ defmodule Dust.Loaders.Image do
         "data:#{mime};base64,#{Base.encode64(asset)}"
 
       _ ->
-        @error_image
+        Dom.error_image()
     end
   end
 end

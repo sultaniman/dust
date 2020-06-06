@@ -1,5 +1,11 @@
 defmodule Dust.Loaders.JS do
-  @moduledoc false
+  @moduledoc """
+  JS loader is responsible to
+
+    1. Extract and resolve all scripts,
+    2. Fetch all JS assets,
+    3. Inline scripts by appending them at the end of document.
+  """
   alias Dust.{Parsers, Requests}
 
   @type url() :: String.t()
