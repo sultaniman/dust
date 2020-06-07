@@ -3,7 +3,7 @@ defmodule Dust.Parsers do
   Parsers API provides abstractions to
   get relevant assets from the DOM.
   """
-  alias Dust.Extractors.UrlExtractor
+  alias Dust.Parsers
   alias Dust.Parsers.{CSS, Image, JS}
 
   @spec parse(String.t()) :: keyword()
@@ -20,7 +20,7 @@ defmodule Dust.Parsers do
 
   @spec parse_urls(String.t()) :: list(String.t())
   def parse_urls(document) do
-    UrlExtractor.extract(document)
+    Parsers.URI.parse(document)
   end
 
   def css(document), do: CSS.parse(document)

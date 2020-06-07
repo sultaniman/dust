@@ -3,6 +3,19 @@ defmodule Dust.Parsers.URI do
   Parse document and returl all links/URIs to
   styles with absolute urls.
   """
+  @css_url_regex ~r/url\(['"]?(?<uri>.*?)['"]?\)/
+
+  @spec parse(String.t()) :: list(String.t())
+  def parse(content) do
+    @css_url_regex
+    |> Regex.scan(content)
+    |> Enum.map(&Enum.at(&1, 1))
+    |> Enum.reject(&is_empty?/1)
+    |> Enum.reject(&is_data_url?/1)
+    |> Enum.reject(&is_font?/1)
+    |> MapSet.new()
+    |> MapSet.to_list()
+  end
 
   @doc """
   Expands relative urls to absolute urls
