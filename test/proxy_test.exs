@@ -1,6 +1,6 @@
 defmodule Dust.ProxyTest do
   use ExUnit.Case
-  alias Dust.Request.Proxy
+  alias Dust.Requests.Proxy
 
   describe "proxy :: 📡" do
     test "can parse socks proxy" do
@@ -10,8 +10,6 @@ defmodule Dust.ProxyTest do
 
       expected = [
         proxy: {:socks5, '192.168.0.1', 1234},
-        follow_redirects: true,
-        max_redirects: 2
       ]
 
       assert expected == Proxy.get_config(proxy)
@@ -20,13 +18,10 @@ defmodule Dust.ProxyTest do
         address: "socks5://192.168.0.1:1234",
         username: "user",
         password: "password",
-        max_redirects: 10
       }
 
       expected = [
         proxy: {:socks5, '192.168.0.1', 1234},
-        follow_redirects: true,
-        max_redirects: 10,
         socks5_user: "user",
         socks5_pass: "password"
       ]
@@ -39,8 +34,6 @@ defmodule Dust.ProxyTest do
 
       expected = [
         proxy: {:socks5, '192.168.0.1', 1234},
-        follow_redirects: true,
-        max_redirects: 2,
         socks5_user: "user",
         socks5_pass: "password"
       ]
@@ -54,8 +47,6 @@ defmodule Dust.ProxyTest do
       }
 
       expected = [
-        follow_redirects: true,
-        max_redirects: 2,
         proxy: '192.168.0.1'
       ]
 
@@ -65,12 +56,9 @@ defmodule Dust.ProxyTest do
         address: "http://192.168.0.1:1234",
         username: "user",
         password: "password",
-        max_redirects: 10
       }
 
       expected = [
-        follow_redirects: true,
-        max_redirects: 10,
         proxy_auth: {"user", "password"},
         proxy: '192.168.0.1'
       ]
@@ -82,8 +70,6 @@ defmodule Dust.ProxyTest do
       }
 
       expected = [
-        follow_redirects: true,
-        max_redirects: 2,
         proxy_auth: {"user", "password"},
         proxy: '192.168.0.1'
       ]
