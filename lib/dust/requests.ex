@@ -5,7 +5,7 @@ defmodule Dust.Requests do
   alias Dust.Parsers
 
   alias Dust.Requests.{
-    ClientState,
+    State,
     Proxy,
     Result,
     Util
@@ -13,19 +13,45 @@ defmodule Dust.Requests do
 
   @type url() :: String.t()
   @type options() :: Keyword.t() | any()
-  @type result() :: {:ok, Result.t(), ClientState.t()} | {:error, Result.t(), ClientState.t()}
+  @type result() :: {:ok, Result.t(), State.t()} | {:error, Result.t(), State.t()}
 
   @max_redirects 3
   @max_retries 3
   @wait_ms 100
 
+  @doc """
+  ## Arguments
+
+    1. `url` - url to page,
+    2. `options` - keyword list with options
+
+  Supports the following options
+
+    1. :proxy - Proxy | string
+    2. :headers - map | keyword list
+    3. :max_retries - int,
+    4. :max_redirects - int,
+    5. :follow_redirect - boolean
+
+  ## Usage
+
+    ```elixir
+    iex> Dust.Requests.get(<URL>, proxy: "socks5://user:pass@10.10.10.10:1080", max_retries: 8,)
+    ```
+  """
   @spec get(url(), options()) :: result()
   def get(url, options \\ []) do
     {max_retries, options} = Keyword.pop(options, :max_retries, @max_retries)
     {headers, options} = Keyword.pop(options, :headers, [])
+    {proxy_config, options} = Keyword.pop(options, :proxy, nil)
+
+    proxy =
+      proxy_config
+      |> Util.get_proxy()
+      |> Proxy.get_config()
 
     retry with: constant_backoff(@wait_ms) |> Stream.take(max_retries) do
-      fetch(url, headers, get_options(options))
+      fetch(url, headers, proxy, get_options(options))
     after
       result -> result
     else
@@ -34,9 +60,9 @@ defmodule Dust.Requests do
   end
 
   ## Private helpers
-  defp fetch(url, headers, options) do
+  defp fetch(url, headers, proxy, options) do
     start_ms = System.monotonic_time(:millisecond)
-    client = ClientState.new(url, headers, options)
+    client = State.new(url, headers, proxy, options)
 
     {status, result} =
       url
@@ -48,7 +74,6 @@ defmodule Dust.Requests do
   end
 
   defp get_options(options) do
-    {proxy_config, options} = Keyword.pop(options, :proxy, nil)
     {max_redirects, options} = Keyword.pop(options, :max_redirects, @max_redirects)
     {follow_redirect, options} = Keyword.pop(options, :follow_redirect, true)
 
@@ -57,13 +82,7 @@ defmodule Dust.Requests do
       follow_redirect: follow_redirect
     ]
 
-    proxy =
-      proxy_config
-      |> Util.get_proxy()
-      |> Proxy.get_config()
-
     base_options
     |> Keyword.merge(options)
-    |> Keyword.merge(proxy)
   end
 end
