@@ -1,29 +1,31 @@
-defmodule Dust.Requests.ClientState do
+defmodule Dust.Requests.State do
   @moduledoc false
   use TypedStruct
   alias __MODULE__
 
   @typedoc "HTTP client configuration"
   typedstruct do
+    field :base_url, String.t()
     field :options, keyword(), default: []
+    field :proxy, keyword(), default: []
     field :headers, map(), default: %{}
-    field :full_url, String.t()
   end
 
   @doc """
-  Create `ClientState` with given
+  Create `State` with given
 
     * `url`,
     * `headers`,
     * `options`
   """
-  @spec new(String.t(), map(), keyword()) :: ClientState.t()
-  def new(url, headers, options) do
+  @spec new(String.t(), map(), keyword(), keyword()) :: State.t()
+  def new(url, headers, proxy, options) do
     with %{scheme: scheme, host: host, path: path} <- URI.parse(url) do
-      %ClientState{
+      %State{
+        base_url: "#{scheme || :https}://#{host || path}",
         options: options,
         headers: headers,
-        full_url: "#{scheme || :https}://#{host || path}"
+        proxy: proxy
       }
     end
   end
