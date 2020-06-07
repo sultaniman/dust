@@ -9,26 +9,22 @@ defmodule Dust.Requests.Result do
   typedstruct do
     field :content, String.t() | nil
     field :full_content, String.t() | nil
-    field :status, non_neg_integer()
-    field :duration, non_neg_integer()
-    field :headers, map()
+    field :size, pos_integer() | 0
+    field :status, pos_integer()
+    field :duration, pos_integer()
     field :error, HTTPoison.Error.t() | nil
-    field :original_request, HTTPoison.Response.t() | nil
-    field :assets, list({atom(), Result.t()}) | []
   end
 
-  def from_request({:ok, %HTTPoison.Response{} = response}, duration) do
+  def from_request({:ok, %HTTPoison.Response{body: content, status_code: status}}, duration) do
     {
       :ok,
       %Result{
-        content: response.body,
+        content: content,
         full_content: nil,
-        status: response.status_code,
+        size: byte_size(content),
+        status: status,
         duration: duration,
-        headers: response.headers,
-        error: nil,
-        original_request: response.request,
-        assets: []
+        error: nil
       }
     }
   end
@@ -39,12 +35,10 @@ defmodule Dust.Requests.Result do
       %Result{
         content: nil,
         full_content: nil,
+        size: 0,
         status: 0,
         duration: duration,
-        headers: [],
-        error: reason,
-        original_request: nil,
-        assets: []
+        error: reason
       }
     }
   end
