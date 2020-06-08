@@ -9,6 +9,21 @@ defmodule Dust.Parsers do
   @type sources() :: list(String.t())
   @type document() :: Floki.html_tag() | Floki.html_tree()
 
+  @doc """
+  Parses raw HTML document and extracts all links
+  to CSS, JS and images for images it also extracts
+  `url(...)` values directly embedded via `style` attribute.
+
+  Returns:
+
+    ```elixir
+    [
+      css: ["some/relative/url.css", "http://absolute.url/app.css"],
+      js: ["some/relative/url.js", "http://absolute.url/app.js"],
+      images: ["some/relative/url.jpg", "http://absolute.url.png"]
+    ]
+    ```
+  """
   @spec parse(String.t()) :: keyword()
   def parse(document) do
     with {:ok, dom} <- Floki.parse_document(document) do
@@ -21,6 +36,10 @@ defmodule Dust.Parsers do
     end
   end
 
+  @doc """
+  Parses raw HTML document and extracts all CSS
+  `url(...)` values directly embedded via `style` attribute.
+  """
   @spec parse_urls(String.t()) :: list(String.t())
   def parse_urls(document) do
     Parsers.URI.parse(document)
