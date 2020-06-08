@@ -1,4 +1,4 @@
-defmodule Dust.Loaders.Image do
+defmodule Dust.Writers.Image do
   @moduledoc """
   Image loader is responsible to
 
@@ -8,7 +8,7 @@ defmodule Dust.Loaders.Image do
   """
   alias ExImageInfo, as: Image
   alias Dust.Dom
-  alias Dust.Loaders.CSS.Inliner
+  alias Dust.Writers.CSS.Inliner
   alias Dust.Parsers
   alias Dust.Requests.Result
 

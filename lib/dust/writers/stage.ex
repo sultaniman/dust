@@ -1,4 +1,4 @@
-defprotocol Dust.Loaders.Stage do
+defprotocol Dust.Writers.Stage do
   @moduledoc false
   alias Dust.Requests.Result
 

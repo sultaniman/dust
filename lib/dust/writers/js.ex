@@ -1,4 +1,4 @@
-defmodule Dust.Loaders.JS do
+defmodule Dust.Writers.JS do
   @moduledoc """
   JS loader is responsible to
 

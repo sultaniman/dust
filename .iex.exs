@@ -5,7 +5,7 @@ alias Dust.{
   Requests,
 }
 
-alias Dust.Loaders.{
+alias Dust.Writers.{
   CSS,
   Image,
   JS

@@ -1,6 +1,6 @@
-defmodule Dust.Loaders.Stage.Impl do
+defmodule Dust.Writers.Stage.Impl do
   @moduledoc false
-  alias Dust.Loaders.{
+  alias Dust.Writers.{
     CSS,
     Image,
     JS,
