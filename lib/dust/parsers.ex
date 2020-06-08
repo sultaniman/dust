@@ -6,6 +6,9 @@ defmodule Dust.Parsers do
   alias Dust.Parsers
   alias Dust.Parsers.{CSS, Image, JS}
 
+  @type sources() :: list(String.t())
+  @type document() :: Floki.html_tag() | Floki.html_tree()
+
   @spec parse(String.t()) :: keyword()
   def parse(document) do
     with {:ok, dom} <- Floki.parse_document(document) do
@@ -23,7 +26,12 @@ defmodule Dust.Parsers do
     Parsers.URI.parse(document)
   end
 
+  @spec css(document()) :: sources()
   def css(document), do: CSS.parse(document)
+
+  @spec js(document()) :: sources()
   def js(document), do: JS.parse(document)
+
+  @spec image(document()) :: sources()
   def image(document), do: Image.parse(document)
 end
