@@ -16,6 +16,13 @@ defmodule Dust.Fetcher do
     |> Enum.map(&Task.await(&1, @task_max_wait_ms))
   end
 
+  @doc """
+  Calculates duration metrics
+  returns the sum of all durations
+  average duration and N times improvement
+  with parallel tasks.
+  """
+  @spec total_duration(keyword()) :: {pos_integer(), float(), float()}
   def total_duration(resources) do
     res =
       resources
