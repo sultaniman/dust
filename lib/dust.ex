@@ -2,7 +2,7 @@ defmodule Dust do
   @moduledoc """
   Documentation for `Dust`.
   """
-  alias Dust.{Loaders, Requests}
+  alias Dust.{Loaders, Requests, Parsers, Fetcher}
 
   def get(url, options \\ [])
 
@@ -16,7 +16,13 @@ defmodule Dust do
     proxy_uri = System.get_env("SOCKS_PROXY")
     {:ok, result, state} = Dust.get("https://turannews.info", proxy: proxy_uri)
     assets = Parsers.parse(result.content)
-    resources = Fetcher.fetch(assets, result.base_url, headers: state.headers, proxy: state.proxy, options: state.proxy)
+
+    Fetcher.fetch(assets, result.base_url,
+      headers: state.headers,
+      proxy: state.proxy,
+      options: state.proxy
+    )
+
     # For each resources[:css] -> extract urls -> Fetcher.fetch() -> Append to resources[:css]
   end
 
