@@ -17,11 +17,18 @@ defmodule Dust.Fetcher do
   end
 
   def total_duration(resources) do
-    resources
-    |> Enum.map(fn {_, sub_resources} -> sub_resources end)
-    |> List.flatten()
-    |> Enum.map(fn %{result: {_, result, _}} -> result.duration end)
-    |> Enum.sum()
+    res =
+      resources
+      |> Enum.map(fn {_, sub_resources} -> sub_resources end)
+      |> List.flatten()
+
+    sum =
+      res
+      |> Enum.map(fn %{result: {_, result, _}} -> result.duration end)
+      |> Enum.sum()
+
+    avg = sum / length(res)
+    {sum, avg, sum / avg}
   end
 
   defp fetch_async({type, resources}, options) do
