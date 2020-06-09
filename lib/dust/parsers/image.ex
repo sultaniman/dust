@@ -8,14 +8,15 @@ defmodule Dust.Parsers.Image do
 
   @spec parse(Floki.html_tree() | Floki.html_tag()) :: list(String.t())
   def parse(document) do
-    imgs = Dom.attr(document, "img", "src")
-    pictures = Dom.attr(document, "picture > source", "srcset")
+    imgs = [
+      Dom.attr(document, "img", "src"),
+      Dom.attr(document, "picture > source", "srcset")
+    ]
 
-    (imgs ++ pictures)
+    imgs
+    |> List.flatten()
     |> Enum.reject(&Parsers.URI.is_empty?/1)
     |> Enum.reject(&Parsers.URI.is_data_url?/1)
     |> Enum.reject(&Parsers.URI.is_font?/1)
-    |> MapSet.new()
-    |> MapSet.to_list()
   end
 end

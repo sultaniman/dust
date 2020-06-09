@@ -13,8 +13,6 @@ defmodule Dust.Parsers.URI do
     |> Enum.reject(&is_empty?/1)
     |> Enum.reject(&is_data_url?/1)
     |> Enum.reject(&is_font?/1)
-    |> MapSet.new()
-    |> MapSet.to_list()
   end
 
   @doc """
