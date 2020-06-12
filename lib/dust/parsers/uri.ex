@@ -3,6 +3,17 @@ defmodule Dust.Parsers.URI do
   Parse document and returl all links/URIs to
   styles with absolute urls.
   """
+  @css_url_regex ~r/url\(['"]?(?<uri>.*?)['"]?\)/
+
+  @spec parse(String.t()) :: list(String.t())
+  def parse(content) do
+    @css_url_regex
+    |> Regex.scan(content)
+    |> Enum.map(&Enum.at(&1, 1))
+    |> Enum.reject(&is_empty?/1)
+    |> Enum.reject(&is_data_url?/1)
+    |> Enum.reject(&is_font?/1)
+  end
 
   @doc """
   Expands relative urls to absolute urls
@@ -42,15 +53,29 @@ defmodule Dust.Parsers.URI do
   end
 
   @spec get_base_url(String.t()) :: URI.t() | any()
-  def get_base_url(uri) do
+  def get_base_url(uri, domain \\ true)
+  def get_base_url(uri, domain) do
     url = URI.parse(uri)
-
-    URI.to_string(%URI{
+    base = %URI{
       scheme: url.scheme || "https",
       host: url.host,
       port: url.port,
-      userinfo: url.userinfo
-    })
+      userinfo: url.userinfo,
+      query: nil,
+      fragment: nil
+    }
+
+    cond do
+      domain ->
+        URI.to_string(base)
+
+      Path.extname(url.path) == "" ->
+        URI.to_string(%URI{base | path: url.path})
+
+      # If we have extension .js, .css etc.
+      true ->
+        URI.to_string(%URI{base | path: Path.dirname(url.path)})
+    end
   end
 
   def normalize(url, as_string \\ false)
@@ -78,12 +103,12 @@ defmodule Dust.Parsers.URI do
   end
 
   def is_font?(url) do
-    String.ends_with?(url, "ttf") ||
-    String.ends_with?(url, "woff") ||
-    String.ends_with?(url, "woff2") ||
-    String.ends_with?(url, "otf") ||
-    String.ends_with?(url, "eot") ||
-    String.ends_with?(url, "ttc")
+    String.contains?(url, ".ttf") ||
+    String.contains?(url, ".woff") ||
+    String.contains?(url, ".woff2") ||
+    String.contains?(url, ".otf") ||
+    String.contains?(url, ".eot") ||
+    String.contains?(url, ".ttc")
   end
 
   def is_data_url?(url) do

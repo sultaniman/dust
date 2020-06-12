@@ -1,4 +1,4 @@
-defmodule Dust.Loaders.CSS.Inliner do
+defmodule Dust.Writers.CSS.Inliner do
   @moduledoc """
   This module works with CSS and provides
   API to inline all images as base64 encoded

@@ -1,4 +1,4 @@
-defmodule Dust.Loaders.CSS do
+defmodule Dust.Writers.CSS do
   @moduledoc """
   CSS loader is responsible to
 
@@ -8,7 +8,7 @@ defmodule Dust.Loaders.CSS do
   """
   alias Dust.Requests
   alias Dust.Parsers
-  alias Dust.Loaders.CSS.Inliner
+  alias Dust.Writers.CSS.Inliner
 
   @type url() :: String.t()
   @type links() :: list(url())

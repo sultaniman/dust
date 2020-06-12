@@ -8,14 +8,15 @@ defmodule Dust.Parsers.JS do
 
   @spec parse(Floki.html_tree() | Floki.html_tag()) :: list(String.t())
   def parse(document) do
-    scripts_preloaded = Dom.attr(document, "link[as=script]", "href")
-    scripts = Dom.attr(document, "script", "src")
+    scripts = [
+      Dom.attr(document, "link[as=script]", "href"),
+      Dom.attr(document, "script", "src")
+    ]
 
-    (scripts_preloaded ++ scripts)
+    scripts
+    |> List.flatten()
     |> Enum.reject(&Parsers.URI.is_empty?/1)
     |> Enum.reject(&Parsers.URI.is_data_url?/1)
     |> Enum.reject(&Parsers.URI.is_font?/1)
-    |> MapSet.new()
-    |> MapSet.to_list()
   end
 end
