@@ -2,7 +2,8 @@ defmodule Dust do
   @moduledoc """
   Documentation for `Dust`.
   """
-  alias Dust.{Requests, Parsers, Fetcher}
+  alias Dust.{Fetcher, Parsers, Requests}
+  alias Dust.HTML.{Format, Inline}
 
   def get(url, options \\ [])
 
@@ -14,10 +15,17 @@ defmodule Dust do
       options: state.proxy
     ]
 
+    assets =
+      result.content
+      |> Parsers.parse()
+      |> Fetcher.fetch(result.base_url, options)
+      |> Fetcher.CSS.fetch(state)
+
     result.content
-    |> Parsers.parse()
-    |> Fetcher.fetch(result.base_url, options)
-    |> Fetcher.CSS.fetch(state)
+    |> Format.to_html()
+    |> Inline.inline(assets[:image])
+    # {result, assets}
+    # :ok
   end
 
   def process() do
