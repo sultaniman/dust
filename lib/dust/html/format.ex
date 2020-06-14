@@ -1,6 +1,6 @@
 defmodule Dust.HTML.Format do
   @moduledoc false
-  def to_html(content) do
+  def split(content) do
     content
     |> String.split(["\n\n", "\r\n\r\n"], trim: true)
     |> Enum.reject(&blank?/1)

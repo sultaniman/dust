@@ -22,7 +22,7 @@ defmodule Dust do
       |> Fetcher.CSS.fetch(state)
 
     result.content
-    |> Format.to_html()
+    |> Format.split()
     |> Inline.inline(assets[:image])
     # {result, assets}
     # :ok
