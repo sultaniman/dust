@@ -6,7 +6,7 @@ defmodule Dust.Writers.JS do
     2. Fetch all JS assets,
     3. Inline scripts by appending them at the end of document.
   """
-  alias Dust.{Parsers, Requests}
+  alias Dust.Requests
 
   @type url() :: String.t()
   @type links() :: list(url())
@@ -15,13 +15,6 @@ defmodule Dust.Writers.JS do
   @type result_list() :: list({url(), result()})
 
   def tag, do: :js
-
-  @spec extract(Result.t()) :: list(String.t())
-  def extract(result) do
-    with {:ok, document} <- Floki.parse_document(result.content) do
-      Parsers.js(document)
-    end
-  end
 
   @spec inline(result_list(), page()) :: String.t()
   def inline(results, page) do

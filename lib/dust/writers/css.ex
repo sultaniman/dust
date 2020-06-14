@@ -7,7 +7,6 @@ defmodule Dust.Writers.CSS do
     3. Inline images as base64 encoded values
   """
   alias Dust.Requests
-  alias Dust.Parsers
   alias Dust.Writers.CSS.Inliner
 
   @type url() :: String.t()
@@ -17,13 +16,6 @@ defmodule Dust.Writers.CSS do
   @type result_list() :: list({url(), result()})
 
   def tag, do: :css
-
-  @spec extract(Result.t()) :: list(String.t())
-  def extract(result) do
-    with {:ok, document} <- Floki.parse_document(result.content) do
-      Parsers.css(document)
-    end
-  end
 
   @spec inline(result_list(), page()) :: String.t()
   def inline(results, page) do
