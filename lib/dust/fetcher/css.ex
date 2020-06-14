@@ -1,7 +1,17 @@
 defmodule Dust.Fetcher.CSS do
-  @moduledoc false
-  alias Dust.{Fetcher, Parsers}
+  @moduledoc """
+  CSS fetcher does the following things
 
+    1. Extracts all image urls from css assets,
+    2. Downloads all images,
+    3. Extends and returns assets with new images.
+
+  `For each resources[:css] -> extract urls -> Fetcher.fetch() -> Append to assets[:image]`
+  """
+  alias Dust.{Fetcher, Parsers}
+  alias Dust.Requests.State
+
+  @spec fetch(keyword(), State.t()) :: keyword()
   def fetch(assets, state) do
     image_assets =
       assets

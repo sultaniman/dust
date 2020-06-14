@@ -26,7 +26,6 @@ defmodule Dust do
 
     # {total, avg, improvement} = Fetcher.total_duration(results)
     # IO.puts("Total: #{total}, Avg: #{avg}, How fast: #{improvement} times")
-    # For each resources[:css] -> extract urls -> Fetcher.fetch() -> Append to resources[:image]
   end
 
   def persist(path, contents) do
