@@ -30,7 +30,9 @@ defmodule Dust.Parsers do
       [
         Task.async(fn -> {:css, css(dom)} end),
         Task.async(fn -> {:js, js(dom)} end),
-        Task.async(fn -> {:image, image(dom) ++ parse_urls(document)} end)
+        Task.async(fn ->
+          {:image, Dust.List.merge(image(dom), parse_urls(document))}
+        end)
       ]
       |> Enum.map(&Task.await(&1))
     end

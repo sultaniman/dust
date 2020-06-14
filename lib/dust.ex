@@ -13,8 +13,8 @@ defmodule Dust do
   end
 
   def process() do
-    proxy_uri = System.get_env("SOCKS_PROXY")
-    {:ok, result, state} = Dust.get("https://turannews.info", proxy: proxy_uri)
+    proxy_uri = System.get_env("PROXY")
+    {:ok, result, state} = Dust.get("https://github.com", proxy: proxy_uri)
     assets = Parsers.parse(result.content)
 
     results = Fetcher.fetch(assets, result.base_url,
@@ -30,10 +30,9 @@ defmodule Dust do
       |> bin_results()
       |> Enum.map(&fetch_bin(&1, state))
       |> remap_results()
+      |> Dust.List.merge(results[:image])
 
-    results
-    |> Keyword.put(:image, css_assets ++ results[:image])
-
+    Keyword.put(results, :image, css_assets)
     # {total, avg, improvement} = Fetcher.total_duration(results)
     # IO.puts("Total: #{total}, Avg: #{avg}, How fast: #{improvement} times")
     # For each resources[:css] -> extract urls -> Fetcher.fetch() -> Append to resources[:image]

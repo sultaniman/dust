@@ -10,8 +10,8 @@ defmodule Dust.Fetcher do
   def fetch(assets, base_url, options \\ [])
 
   def fetch(assets, base_url, options) do
-    base_url
-    |> prepare(assets)
+    assets
+    |> Enum.map(&expand_urls(base_url, &1))
     |> Enum.map(&fetch_async(&1, options))
     |> Enum.map(&Task.await(&1, @task_max_wait_ms))
   end
@@ -30,13 +30,16 @@ defmodule Dust.Fetcher do
       |> List.flatten()
 
     sum =
-      res
-      |> Enum.map(fn %{result: {_, result, _}} -> result.duration end)
-      |> Enum.sum()
+      Enum.reduce(res, 0, fn %{result: result}, acc ->
+        acc + duration(result)
+      end)
 
     avg = sum / length(res)
     {sum, avg, sum / avg}
   end
+
+  defp duration({:ok, result, _}), do: result.duration
+  defp duration({:error, _, _}), do: 0
 
   defp fetch_async({type, resources}, options) do
     {headers, options} = Keyword.pop(options, :headers, [])
@@ -63,11 +66,6 @@ defmodule Dust.Fetcher do
     Task.async(fn ->
       %Resource{resource | result: Requests.get(resource.absolute_url, options)}
     end)
-  end
-
-  defp prepare(base_url, assets) do
-    assets
-    |> Enum.map(&expand_urls(base_url, &1))
   end
 
   defp expand_urls(base_url, {type, urls}) do
