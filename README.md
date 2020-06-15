@@ -26,13 +26,14 @@ end
 ## Usage 🧠
 
 ```elixir
-{:ok, result} = Dust.get(
-    url,
-    headers: headers,
-    proxy: %Proxy{...} | "socks5://user:pass@awesome.host:port",
-    max_retries: 3,
-    loaders: [:css, :image, :js, :json]
-  )
+result = Dust.get(
+  url,
+  headers: headers,
+  proxy: %Proxy{...} | "socks5://user:pass@awesome.host:port",
+  max_retries: 3
+)
+
+Dust.persist(result, "AWESOME/PAGE.HTML")
 ```
 
 ## Documentation
