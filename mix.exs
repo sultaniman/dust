@@ -53,7 +53,7 @@ defmodule Dust.MixProject do
       {:floki, "~> 0.26.0"},
       {:typed_struct, "~> 0.1.4"},
       {:ex_image_info, "~> 0.2.4"},
-      {:ex_doc, "~> 0.21", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.21.0", only: :dev, runtime: false},
       {:excoveralls, "~> 0.12", only: :test},
       {:inch_ex, github: "rrrene/inch_ex", only: [:dev, :test]},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false}
