@@ -1,6 +1,6 @@
-defmodule Dust.Resource do
+defmodule Dust.Asset do
   @moduledoc """
-  Resource struct, keeps
+  Asset struct, keeps
 
     1. relative url,
     2. absolute url,
@@ -10,7 +10,7 @@ defmodule Dust.Resource do
 
   alias Dust.Requests.Result
 
-  @typedoc "Resource struct"
+  @typedoc "Asset struct"
   typedstruct do
     field :relative_url, String.t()
     field :absolute_url, String.t()
