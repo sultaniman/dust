@@ -10,9 +10,7 @@ defmodule Dust.HTML.Inline do
   def inline(lines, resources, drop_string) do
     Enum.map(lines, fn line ->
       resources
-      |> Enum.filter(&String.contains?(line, &1.relative_url))
-      |> List.first()
-      |> replace_image(line)
+      |> Enum.reduce(line, &replace_image/2)
       |> maybe_drop_substring(drop_string)
     end)
   end
@@ -30,10 +28,14 @@ defmodule Dust.HTML.Inline do
   defp replace_image([], line), do: line
   defp replace_image(%{result: {:error, _result, _}}, line), do: line
   defp replace_image(%{result: {:ok, result, _}} = resource, line) do
-    String.replace(
-      line,
-      resource.relative_url,
-      Image.encode(resource.relative_url, result.content)
-    )
+    if String.contains?(line, resource.relative_url) do
+      String.replace(
+        line,
+        resource.relative_url,
+        Image.encode(resource.relative_url, result.content)
+      )
+    else
+      line
+    end
   end
 end
