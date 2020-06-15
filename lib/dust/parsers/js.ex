@@ -6,7 +6,7 @@ defmodule Dust.Parsers.JS do
   alias Dust.Dom
   alias Dust.Parsers
 
-  @spec parse(Floki.html_tree() | Floki.html_tag()) :: list(String.t())
+  @spec parse(Floki.html_tree() | Floki.html_tag()) :: [String.t()]
   def parse(document) do
     scripts = [
       Dom.attr(document, "link[as=script]", "href"),

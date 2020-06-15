@@ -6,6 +6,21 @@ defmodule Dust.HTML.Styles do
 
   @task_max_wait_ms 5_000
 
+  @doc """
+  Split and prepare each CSS asset and embed
+  Base64 encoded images into each stylesheet.
+  It needs both image assets and stylesheets
+  to lookup references to images in CSS sources
+  and replace them with data images.
+
+  Parameters:
+
+  * `assets` list of stylesheets and images `[css: [...], image: [...]]`.
+
+  Returns:
+
+    `list(String.t())` CSS content with Base64 encoded and embedded images.
+  """
   @spec inline(list(Asset.t()) | keyword()) :: styles()
   def inline(assets) do
     images = Keyword.get(assets, :image, [])

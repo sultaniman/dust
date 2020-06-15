@@ -1,9 +1,24 @@
 defmodule Dust.HTML.Scripts do
+  @moduledoc """
+  Handles JavaScript assets.
+  """
   alias Dust.Asset
   alias Dust.HTML.Format
 
   @type scripts() :: list(binary())
 
+
+  @doc """
+  Split and prepare each script
+
+  Parameters:
+
+    * `assets` collection of scripts.
+
+  Returns:
+
+    `list(String.t())` list of JavaScript sources.
+  """
   @spec inline(list(Asset.t()) | keyword()) :: scripts()
   def inline(assets) do
     assets

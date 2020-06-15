@@ -5,25 +5,18 @@ defmodule Dust.Parsers.Favicon do
   alias Dust.Dom
   alias Dust.Parsers
 
-  @spec parse(Floki.html_tree() | Floki.html_tag()) :: list(String.t())
+  @spec parse(Floki.html_tree() | Floki.html_tag()) :: [String.t()]
   def parse(document) do
-    icon =
-      document
-      |> Dom.attr("link[rel=icon]", "href")
+    icons = [
+      Dom.attr(document, "link[rel=icon]", "href"),
+      Dom.attr(document, "link[rel='alternate icon']", "href"),
+      Dom.attr(document, "link[rel=mask-icon]", "href")
+    ]
 
-    alternate_icon =
-      document
-      |> Dom.attr("link[rel='alternate icon']", "href")
-
-    mask_icon =
-      document
-      |> Dom.attr("link[rel=mask-icon]", "href")
-
-    (icon ++ alternate_icon ++ mask_icon)
+    icons
+    |> List.flatten()
     |> Enum.reject(&Parsers.URI.is_empty?/1)
     |> Enum.reject(&Parsers.URI.is_data_url?/1)
     |> Enum.reject(&Parsers.URI.is_font?/1)
-    |> MapSet.new()
-    |> MapSet.to_list()
   end
 end

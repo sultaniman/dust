@@ -1,5 +1,10 @@
 defmodule Dust.HTML.Format do
   @moduledoc false
+  @doc """
+  Split `content` and filter out blank lines.
+  """
+
+  @spec split(String.t()) :: [String.t()]
   def split(content) do
     content
     |> String.split(["\n\n", "\r\n\r\n"], trim: true)

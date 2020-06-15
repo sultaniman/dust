@@ -4,7 +4,7 @@ defmodule Dust.Parsers do
   get relevant assets from the DOM.
   """
   alias Dust.Parsers
-  alias Dust.Parsers.{CSS, Image, JS}
+  alias Dust.Parsers.{CSS, Image, Favicon, JS}
 
   @type sources() :: list(String.t())
   @type document() :: Floki.html_tag() | Floki.html_tree()
@@ -24,14 +24,20 @@ defmodule Dust.Parsers do
     ]
     ```
   """
-  @spec parse(String.t()) :: keyword()
+  @spec parse(String.t()) :: list()
   def parse(document) do
     with {:ok, dom} <- Floki.parse_document(document) do
       [
         Task.async(fn -> {:css, css(dom)} end),
         Task.async(fn -> {:js, js(dom)} end),
         Task.async(fn ->
-          {:image, Dust.List.merge(image(dom), parse_urls(document))}
+          {
+            :image,
+            dom
+            |> favicon()
+            |> Dust.List.merge(image(dom))
+            |> Dust.List.merge(parse_urls(document))
+          }
         end)
       ]
       |> Enum.map(&Task.await(&1))
@@ -42,7 +48,7 @@ defmodule Dust.Parsers do
   Parses raw HTML document and extracts all CSS
   `url(...)` values directly embedded via `style` attribute.
   """
-  @spec parse_urls(String.t()) :: list(String.t())
+  @spec parse_urls(String.t()) :: sources()
   def parse_urls(document) do
     Parsers.URI.parse(document)
   end
@@ -55,4 +61,7 @@ defmodule Dust.Parsers do
 
   @spec image(document()) :: sources()
   def image(document), do: Image.parse(document)
+
+  @spec favicon(document()) :: sources()
+  def favicon(document), do: Favicon.parse(document)
 end

@@ -1,11 +1,31 @@
 defmodule Dust.HTML.Inline do
+  @moduledoc """
+  Inlines image assets into given content
+  which is the list of lines.
+  """
   alias Dust.Asset
   alias Dust.HTML.Image
 
-  @type content_list() :: list(binary())
+  @type content_list() :: list(String.t())
   @type assets() :: list(Asset.t())
 
+  @doc """
+  Search each line and inline `assets` which represent images
+
+  Parameters:
+
+  * `lines` list of strings of raw HTML,
+  * `assets` collection of images,
+  * `drop_string` optional parameter which is a string
+    which you may want to drop from original content.
+
+  Returns:
+
+    `list(String.t())` HTML content with Base64 encoded and embedded images.
+  """
+
   @spec inline(content_list(), assets(), String.t() | nil) :: content_list()
+
   def inline(lines, assets, drop_string \\ nil)
 
   def inline(lines, assets, drop_string) do

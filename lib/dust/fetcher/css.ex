@@ -11,7 +11,11 @@ defmodule Dust.Fetcher.CSS do
   alias Dust.{Fetcher, Parsers}
   alias Dust.Requests.State
 
-  @spec fetch(keyword(), State.t()) :: keyword()
+  @doc """
+  Extract all urls for images from css files then
+  merge them all into main `assets` list.
+  """
+  @spec fetch(list(), State.t()) :: list() | keyword()
   def fetch(assets, state) do
     image_assets =
       assets
