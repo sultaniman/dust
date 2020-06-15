@@ -6,7 +6,7 @@ defmodule Dust.Fetcher.CSS do
     2. Downloads all images,
     3. Extends and returns assets with new images.
 
-  `For each resources[:css] -> extract urls -> Fetcher.fetch() -> Append to assets[:image]`
+  `For each assets[:css] -> extract urls -> Fetcher.fetch() -> Append to assets[:image]`
   """
   alias Dust.{Fetcher, Parsers}
   alias Dust.Requests.State

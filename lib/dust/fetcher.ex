@@ -1,9 +1,9 @@
 defmodule Dust.Fetcher do
   @moduledoc false
-  alias Dust.{Parsers, Resource, Requests}
+  alias Dust.{Asset, Parsers, Requests}
 
-  @type resource_type() :: {:css | :js | :image, Resource.t()}
-  @type resource_list() :: list(resource_type())
+  @type asset_type() :: {:css | :js | :image, Asset.t()}
+  @type asset_list() :: list(asset_type())
 
   @task_max_wait_ms 30_000
 
@@ -23,10 +23,10 @@ defmodule Dust.Fetcher do
   with parallel tasks.
   """
   @spec total_duration(keyword()) :: {pos_integer(), float(), float()}
-  def total_duration(resources) do
+  def total_duration(assets) do
     res =
-      resources
-      |> Enum.map(fn {_, sub_resources} -> sub_resources end)
+      assets
+      |> Enum.map(fn {_, sub_assets} -> sub_assets end)
       |> List.flatten()
 
     sum =
@@ -41,7 +41,7 @@ defmodule Dust.Fetcher do
   defp duration({:ok, result, _}), do: result.duration
   defp duration({:error, _, _}), do: 0
 
-  defp fetch_async({type, resources}, options) do
+  defp fetch_async({type, assets}, options) do
     {headers, options} = Keyword.pop(options, :headers, [])
     {proxy_options, options} = Keyword.pop(options, :proxy, [])
     {request_options, _options} = Keyword.pop(options, :options, [])
@@ -55,16 +55,16 @@ defmodule Dust.Fetcher do
     Task.async(fn ->
       {
         type,
-        resources
-        |> Enum.map(&async_resource(&1, options))
+        assets
+        |> Enum.map(&async_asset(&1, options))
         |> Enum.map(&Task.await(&1, @task_max_wait_ms))
       }
     end)
   end
 
-  defp async_resource(resource, options) do
+  defp async_asset(asset, options) do
     Task.async(fn ->
-      %Resource{resource | result: Requests.get(resource.absolute_url, options)}
+      %Asset{asset | result: Requests.get(asset.absolute_url, options)}
     end)
   end
 
@@ -73,7 +73,7 @@ defmodule Dust.Fetcher do
       type,
       Enum.map(
         urls,
-        &%Resource{
+        &%Asset{
           absolute_url: Parsers.URI.expand(base_url, &1),
           relative_url: &1
         }

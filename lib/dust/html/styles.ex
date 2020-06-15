@@ -1,18 +1,17 @@
 defmodule Dust.HTML.Styles do
-  alias Dust.Resource
+  alias Dust.Asset
   alias Dust.HTML.{Format, Inline}
 
   @type styles() :: list(binary())
-  @type resources() :: list(Resource.t())
 
   @task_max_wait_ms 5_000
 
-  @spec inline(list(Resource.t()) | keyword()) :: styles()
-  def inline(resources) do
-    images = Keyword.get(resources, :image, [])
+  @spec inline(list(Asset.t()) | keyword()) :: styles()
+  def inline(assets) do
+    images = Keyword.get(assets, :image, [])
     wait_ms = length(images) * @task_max_wait_ms
 
-    resources
+    assets
     |> Keyword.get(:css, [])
     |> Enum.map(&async_inline(&1, images))
     |> Enum.map(&Task.await(&1, wait_ms))
@@ -30,8 +29,8 @@ defmodule Dust.HTML.Styles do
             "</style>"
           ]
 
-        %{result: {:error, _result, _state}} = resource ->
-          ["<!--", "Unable to load style:", resource.relative_url, "-->"]
+        %{result: {:error, _result, _state}} = asset ->
+          ["<!--", "Unable to load style:", asset.relative_url, "-->"]
       end
     end)
   end

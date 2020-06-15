@@ -1,15 +1,15 @@
 defmodule Dust.HTML.Inline do
-  alias Dust.Resource
+  alias Dust.Asset
   alias Dust.HTML.Image
 
   @type content_list() :: list(binary())
-  @type resources() :: list(Resource.t())
+  @type assets() :: list(Asset.t())
 
-  @spec inline(content_list(), resources(), String.t() | nil) :: content_list()
-  def inline(lines, resources, drop_string \\ nil)
-  def inline(lines, resources, drop_string) do
+  @spec inline(content_list(), assets(), String.t() | nil) :: content_list()
+  def inline(lines, assets, drop_string \\ nil)
+  def inline(lines, assets, drop_string) do
     Enum.map(lines, fn line ->
-      resources
+      assets
       |> Enum.reduce(line, &replace_image/2)
       |> maybe_drop_substring(drop_string)
     end)
@@ -27,12 +27,12 @@ defmodule Dust.HTML.Inline do
   defp replace_image(nil, line), do: line
   defp replace_image([], line), do: line
   defp replace_image(%{result: {:error, _result, _}}, line), do: line
-  defp replace_image(%{result: {:ok, result, _}} = resource, line) do
-    if String.contains?(line, resource.relative_url) do
+  defp replace_image(%{result: {:ok, result, _}} = asset, line) do
+    if String.contains?(line, asset.relative_url) do
       String.replace(
         line,
-        resource.relative_url,
-        Image.encode(resource.relative_url, result.content)
+        asset.relative_url,
+        Image.encode(asset.relative_url, result.content)
       )
     else
       line

@@ -1,13 +1,12 @@
 defmodule Dust.HTML.Scripts do
-  alias Dust.Resource
+  alias Dust.Asset
   alias Dust.HTML.Format
 
   @type scripts() :: list(binary())
-  @type resources() :: list(Resource.t())
 
-  @spec inline(list(Resource.t()) | keyword()) :: scripts()
-  def inline(resources) do
-    resources
+  @spec inline(list(Asset.t()) | keyword()) :: scripts()
+  def inline(assets) do
+    assets
     |> Keyword.get(:js, [])
     |> Enum.map(&async_inline/1)
     |> Enum.map(&Task.await/1)
@@ -23,8 +22,8 @@ defmodule Dust.HTML.Scripts do
             "</script>"
           ]
 
-        %{result: {:error, _result, _state}} = resource ->
-          ["<!--", "Unable to load script:", resource.relative_url, "-->"]
+        %{result: {:error, _result, _state}} = asset ->
+          ["<!--", "Unable to load script:", asset.relative_url, "-->"]
       end
     end)
   end
