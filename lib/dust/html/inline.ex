@@ -7,6 +7,7 @@ defmodule Dust.HTML.Inline do
 
   @spec inline(content_list(), assets(), String.t() | nil) :: content_list()
   def inline(lines, assets, drop_string \\ nil)
+
   def inline(lines, assets, drop_string) do
     Enum.map(lines, fn line ->
       assets
@@ -16,6 +17,7 @@ defmodule Dust.HTML.Inline do
   end
 
   defp maybe_drop_substring(line, nil), do: line
+
   defp maybe_drop_substring(line, drop) do
     if drop == "" do
       line
@@ -27,6 +29,7 @@ defmodule Dust.HTML.Inline do
   defp replace_image(nil, line), do: line
   defp replace_image([], line), do: line
   defp replace_image(%{result: {:error, _result, _}}, line), do: line
+
   defp replace_image(%{result: {:ok, result, _}} = asset, line) do
     if String.contains?(line, asset.relative_url) do
       String.replace(

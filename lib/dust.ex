@@ -9,6 +9,7 @@ defmodule Dust do
 
   def get(url, options) do
     {:ok, result, state} = Requests.get(url, options)
+
     options = [
       headers: state.headers,
       proxy: state.proxy,
@@ -25,13 +26,11 @@ defmodule Dust do
       result.content
       |> Format.split()
       |> Inline.inline(assets[:image], "</html>"),
-
       Styles.inline(assets),
-
       Scripts.inline(assets),
-
       "</html>"
     ]
+
     # {result, assets}
     # :ok
   end

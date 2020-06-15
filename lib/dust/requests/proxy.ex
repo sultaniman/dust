@@ -27,6 +27,7 @@ defmodule Dust.Requests.Proxy do
   end
 
   def get_config(nil), do: []
+
   def get_config(proxy) when is_list(proxy) do
     proxy
   end

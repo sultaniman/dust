@@ -14,6 +14,7 @@ defmodule Dust.HTML.Image do
 
   defp maybe_svg(filename, content) do
     parsed = URI.parse(filename)
+
     if String.ends_with?(parsed.path, ".svg") do
       "data:image/svg+xml;base64,#{Base.encode64(content)}"
     else

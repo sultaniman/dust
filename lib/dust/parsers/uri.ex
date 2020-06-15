@@ -54,8 +54,10 @@ defmodule Dust.Parsers.URI do
 
   @spec get_base_url(String.t()) :: URI.t() | any()
   def get_base_url(uri, domain \\ true)
+
   def get_base_url(uri, domain) do
     url = URI.parse(uri)
+
     base = %URI{
       scheme: url.scheme || "https",
       host: url.host,

@@ -26,8 +26,10 @@ defmodule Dust.Fetcher.CSS do
   end
 
   defp collect_css_urls(%{result: {:error, _, _state}}), do: []
+
   defp collect_css_urls(%{result: {:ok, result, _state}}) do
     base_url = Parsers.URI.get_base_url(result.base_url, false)
+
     result.content
     |> Parsers.URI.parse()
     |> Enum.map(&{base_url, &1})
