@@ -21,11 +21,15 @@ defmodule Dust do
       |> Fetcher.fetch(result.base_url, options)
       |> Fetcher.CSS.fetch(state)
 
-    result.content
-    |> Format.split()
-    |> Inline.inline(assets[:image])
+    [
+      result.content
+      |> Format.split()
+      |> Inline.inline(assets[:image], "</html>"),
 
-    Styles.inline(assets)
+      Styles.inline(assets),
+
+      "</html>"
+    ]
     # {result, assets}
     # :ok
   end
