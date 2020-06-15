@@ -2,8 +2,7 @@ defmodule Dust do
   @moduledoc """
   Documentation for `Dust`.
   """
-  alias Dust.{Fetcher, Parsers, Requests}
-  alias Dust.HTML.{Format, Inline, Scripts, Styles}
+  alias Dust.{Fetcher, HTML, Parsers, Requests}
 
   def get(url, options \\ [])
 
@@ -22,17 +21,16 @@ defmodule Dust do
       |> Fetcher.fetch(result.base_url, options)
       |> Fetcher.CSS.fetch(state)
 
-    [
-      result.content
-      |> Format.split()
-      |> Inline.inline(assets[:image], "</html>"),
-      Styles.inline(assets),
-      Scripts.inline(assets),
-      "</html>"
-    ]
-
-    # {result, assets}
-    # :ok
+    %Requests.Result{
+      result
+      | full_content: [
+          HTML.inline(result.content, assets),
+          HTML.Styles.inline(assets),
+          HTML.Scripts.inline(assets),
+          "</html>"
+        ],
+        assets: assets
+    }
   end
 
   def process() do
@@ -43,10 +41,13 @@ defmodule Dust do
     # IO.puts("Total: #{total}, Avg: #{avg}, How fast: #{improvement} times")
   end
 
-  def persist(path, contents) do
+  def persist(contents, path) when is_list(contents) do
     with {:ok, file} <- File.open(path, [:write]) do
       IO.binwrite(file, contents)
       File.close(file)
     end
+  end
+  def persist(%Requests.Result{} = result, path) do
+    persist(result.full_content, path)
   end
 end
