@@ -3,7 +3,7 @@ defmodule Dust do
   Documentation for `Dust`.
   """
   alias Dust.{Fetcher, Parsers, Requests}
-  alias Dust.HTML.{Format, Inline}
+  alias Dust.HTML.{Format, Inline, Styles}
 
   def get(url, options \\ [])
 
@@ -24,6 +24,8 @@ defmodule Dust do
     result.content
     |> Format.split()
     |> Inline.inline(assets[:image])
+
+    Styles.inline(assets)
     # {result, assets}
     # :ok
   end
