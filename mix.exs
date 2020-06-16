@@ -1,7 +1,7 @@
 defmodule Dust.MixProject do
   use Mix.Project
 
-  @vsn "0.0.1"
+  @vsn "0.0.1-dev"
   @package [
     name: "dust",
     files: ~w(lib .formatter.exs mix.exs README* LICENSE*),
@@ -48,14 +48,14 @@ defmodule Dust.MixProject do
 
   defp deps do
     [
-      {:httpoison, "~> 1.6"},
+      {:httpoison, "~> 1.7"},
       {:retry, "~> 0.14.0"},
       {:floki, "~> 0.26.0"},
-      {:typed_struct, "~> 0.1.4"},
+      {:typed_struct, "~> 0.2.0"},
       {:ex_image_info, "~> 0.2.4"},
-      {:ex_doc, "~> 0.21.0", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.12", only: :test},
-      {:inch_ex, github: "rrrene/inch_ex", only: [:dev, :test]},
+      {:ex_doc, "~> 0.22", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.13", only: :test},
+      {:inch_ex, "~> 2.0", only: [:dev, :test]},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end

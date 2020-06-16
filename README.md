@@ -3,9 +3,8 @@
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg?style=for-the-badge)](https://houndci.com)
 [![Hex.pm](https://img.shields.io/hexpm/l/dust?color=ff69b4&label=License&style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
 
-
 <h1 align="center">
-Dust
+  Dust
 </h1>
 <p align="center">
   <img width="150" height="150" src="https://raw.githubusercontent.com/imanhodjaev/dust/develop/assets/dust.svg"/>
