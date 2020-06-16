@@ -5,7 +5,7 @@ defmodule Dust.HTML.Scripts do
   alias Dust.Asset
   alias Dust.HTML.Format
 
-  @type scripts() :: list(binary())
+  @type scripts() :: [binary()]
 
 
   @doc """
@@ -17,9 +17,9 @@ defmodule Dust.HTML.Scripts do
 
   Returns:
 
-    `list(String.t())` list of JavaScript sources.
+    * `[String.t()]` list of JavaScript sources.
   """
-  @spec inline(list(Asset.t()) | keyword()) :: scripts()
+  @spec inline([Asset.t()] | keyword()) :: scripts()
   def inline(assets) do
     assets
     |> Keyword.get(:js, [])

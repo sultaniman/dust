@@ -3,7 +3,7 @@ defmodule Dust.Fetcher do
   alias Dust.{Asset, Parsers, Requests}
 
   @type asset_type() :: {:css | :js | :image, Asset.t()}
-  @type asset_list() :: list(asset_type())
+  @type asset_list() :: [asset_type()]
 
   @task_max_wait_ms 30_000
 

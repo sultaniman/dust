@@ -4,7 +4,7 @@ defmodule Dust.Dom do
   @type attr() :: String.t()
   @type document() :: Floki.html_tree() | Floki.html_tag()
 
-  @spec attr(document(), selector(), attr()) :: list(String.t())
+  @spec attr(document(), selector(), attr()) :: [String.t()]
   def attr(document, selector, attr) do
     document
     |> Floki.find(selector)

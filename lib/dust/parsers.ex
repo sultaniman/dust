@@ -45,7 +45,7 @@ defmodule Dust.Parsers do
   end
 
   @doc """
-  Parses raw HTML document and extracts all CSS
+  Parses raw HTML document and extracts CSS
   `url(...)` values directly embedded via `style` attribute.
   """
   @spec parse_urls(String.t()) :: sources()
@@ -53,15 +53,27 @@ defmodule Dust.Parsers do
     Parsers.URI.parse(document)
   end
 
+  @doc """
+  Parses raw HTML document and extracts CSS urls
+  """
   @spec css(document()) :: sources()
   def css(document), do: CSS.parse(document)
 
+  @doc """
+  Parses raw HTML document and extracts JavaScript urls
+  """
   @spec js(document()) :: sources()
   def js(document), do: JS.parse(document)
 
+  @doc """
+  Parses raw HTML document and extracts image urls
+  """
   @spec image(document()) :: sources()
   def image(document), do: Image.parse(document)
 
+  @doc """
+  Parses raw HTML document and extracts favicon urls
+  """
   @spec favicon(document()) :: sources()
   def favicon(document), do: Favicon.parse(document)
 end

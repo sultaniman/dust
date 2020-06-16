@@ -5,6 +5,15 @@ defmodule Dust.Parsers.Favicon do
   alias Dust.Dom
   alias Dust.Parsers
 
+  @doc """
+  Extract all links to favicon
+
+  Following selectors are used:
+
+    * `link[rel=icon]`
+    * `link[rel='alternate icon']`
+    * `link[rel=mask-icon]`
+  """
   @spec parse(Floki.html_tree() | Floki.html_tag()) :: [String.t()]
   def parse(document) do
     icons = [

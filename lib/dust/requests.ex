@@ -1,5 +1,8 @@
 defmodule Dust.Requests do
-  @moduledoc false
+  @moduledoc """
+  Requests provide an API to make fetch pages also it supports
+  automatic retries with constant backoff the request should fail.
+  """
   use Retry
 
   alias Dust.Parsers

@@ -6,6 +6,14 @@ defmodule Dust.Parsers.JS do
   alias Dust.Dom
   alias Dust.Parsers
 
+  @doc """
+  Extract all links to JavaScript assets
+
+  Following selectors are used:
+
+    * `link[as=script]`
+    * `script`
+  """
   @spec parse(Floki.html_tree() | Floki.html_tag()) :: [String.t()]
   def parse(document) do
     scripts = [

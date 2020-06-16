@@ -13,10 +13,10 @@ defmodule Dust.HTML do
 
   Returns:
 
-    `list(String.t())` HTML content with Base64 encoded and embedded images.
+    * `[String.t()]` HTML content with Base64 encoded and embedded images.
   """
 
-  @spec inline(String.t(), list(Asset.t()) | keyword()) :: list(String.t())
+  @spec inline(String.t(), [Asset.t()] | keyword()) :: [String.t()]
   def inline(content, assets) do
     content
     |> Format.split()

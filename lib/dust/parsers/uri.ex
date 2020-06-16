@@ -5,6 +5,9 @@ defmodule Dust.Parsers.URI do
   """
   @css_url_regex ~r/url\(['"]?(?<uri>.*?)['"]?\)/
 
+  @doc """
+  Extract all CSS `url(...)` links
+  """
   @spec parse(String.t()) :: list(String.t())
   def parse(content) do
     @css_url_regex

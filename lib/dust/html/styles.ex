@@ -15,13 +15,13 @@ defmodule Dust.HTML.Styles do
 
   Parameters:
 
-  * `assets` list of stylesheets and images `[css: [...], image: [...]]`.
+    * `assets` list of stylesheets and images `[css: [...], image: [...]]`.
 
   Returns:
 
-    `list(String.t())` CSS content with Base64 encoded and embedded images.
+    * `[String.t()]` CSS content with Base64 encoded and embedded images.
   """
-  @spec inline(list(Asset.t()) | keyword()) :: styles()
+  @spec inline([Asset.t()] | keyword()) :: styles()
   def inline(assets) do
     images = Keyword.get(assets, :image, [])
     wait_ms = length(images) * @task_max_wait_ms

@@ -6,6 +6,14 @@ defmodule Dust.Parsers.Image do
   alias Dust.Dom
   alias Dust.Parsers
 
+  @doc """
+  Extract all links to images
+
+  Following selectors are used:
+
+    * `img`
+    * `picture > source`
+  """
   @spec parse(Floki.html_tree() | Floki.html_tag()) :: [String.t()]
   def parse(document) do
     imgs = [

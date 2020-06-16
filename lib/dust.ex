@@ -2,8 +2,13 @@ defmodule Dust do
   @moduledoc """
   Documentation for `Dust`.
   """
+  alias Dust.Requests.Result
   alias Dust.{Fetcher, HTML, Parsers, Requests}
 
+  @doc """
+  Fetch given url with scripts, stylesheets and image assets
+  """
+  @spec get(String.t(), Keyword.t()) :: Result.t()
   def get(url, options \\ [])
 
   def get(url, options) do
@@ -21,7 +26,7 @@ defmodule Dust do
       |> Fetcher.fetch(result.base_url, options)
       |> Fetcher.CSS.fetch(state)
 
-    %Requests.Result{
+    %Result{
       result
       | full_content: [
           HTML.inline(result.content, assets),

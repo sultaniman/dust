@@ -21,7 +21,7 @@ defmodule Dust.HTML.Inline do
 
   Returns:
 
-    `list(String.t())` HTML content with Base64 encoded and embedded images.
+    * `[String.t()]` HTML content with Base64 encoded and embedded images.
   """
 
   @spec inline(content_list(), assets(), String.t() | nil) :: content_list()
