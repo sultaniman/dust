@@ -38,14 +38,6 @@ defmodule Dust do
     }
   end
 
-  def process() do
-    proxy_uri = System.get_env("PROXY")
-    Dust.get("https://github.com", proxy: proxy_uri)
-
-    # {total, avg, improvement} = Fetcher.total_duration(results)
-    # IO.puts("Total: #{total}, Avg: #{avg}, How fast: #{improvement} times")
-  end
-
   def persist(contents, path) when is_list(contents) do
     with {:ok, file} <- File.open(path, [:write]) do
       IO.binwrite(file, contents)
