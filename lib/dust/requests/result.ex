@@ -3,6 +3,7 @@ defmodule Dust.Requests.Result do
   Result struct to store response data
   """
   use TypedStruct
+  alias Dust.Asset
   alias __MODULE__
 
   @typedoc "Result struct"
@@ -14,7 +15,7 @@ defmodule Dust.Requests.Result do
     field :duration, pos_integer(), default: 0
     field :error, HTTPoison.Error.t(), default: nil
     field :base_url, String.t()
-    field :assets, list(Dust.Asset.t()), default: []
+    field :assets, list(Asset.t()), default: []
   end
 
   def from_request({:ok, %HTTPoison.Response{body: content, status_code: status, request: request}}, duration) do

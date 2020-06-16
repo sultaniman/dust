@@ -53,7 +53,7 @@ defmodule Dust.Requests do
       |> Util.get_proxy()
       |> Proxy.get_config()
 
-    retry with: constant_backoff(@wait_ms) |> Stream.take(max_retries) do
+    retry with: @wait_ms |> constant_backoff() |> Stream.take(max_retries) do
       fetch(url, headers, proxy, get_options(options))
     after
       result -> result
