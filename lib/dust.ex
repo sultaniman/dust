@@ -38,6 +38,9 @@ defmodule Dust do
     }
   end
 
+  @doc """
+  Save result to file
+  """
   def persist(contents, path) when is_list(contents) do
     with {:ok, file} <- File.open(path, [:write]) do
       IO.binwrite(file, contents)
