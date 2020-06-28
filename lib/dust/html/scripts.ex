@@ -33,13 +33,13 @@ defmodule Dust.HTML.Scripts do
         %{result: {:ok, result, _state}} ->
           [
             "<script lang=\"javascript\">",
-            "/*", "Script source:", asset.relative_url, "*/",
+            "/*", "Script source:", js.relative_url, "*/",
             Format.split(result.content),
             "</script>"
           ]
 
-        %{result: {:error, _result, _state}} = asset ->
-          ["<!--", "Unable to load script:", asset.relative_url, "-->"]
+        %{result: {:error, _result, _state}} ->
+          ["<!--", "Unable to load script:", js.relative_url, "-->"]
       end
     end)
   end
