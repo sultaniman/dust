@@ -38,15 +38,15 @@ defmodule Dust.HTML.Styles do
         %{result: {:ok, result, _state}} ->
           [
             "<style>",
-            "/*", "Style source:", asset.relative_url, "*/",
+            "/*", "Style source:", css.relative_url, "*/",
             result.content
             |> Format.split()
             |> Inline.inline(images),
             "</style>"
           ]
 
-        %{result: {:error, _result, _state}} = asset ->
-          ["<!--", "Unable to load style:", asset.relative_url, "-->"]
+        %{result: {:error, _result, _state}} ->
+          ["<!--", "Unable to load style:", css.relative_url, "-->"]
       end
     end)
   end
