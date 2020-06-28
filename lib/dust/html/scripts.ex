@@ -33,6 +33,7 @@ defmodule Dust.HTML.Scripts do
         %{result: {:ok, result, _state}} ->
           [
             "<script lang=\"javascript\">",
+            "/*", "Script source:", asset.relative_url, "*/",
             Format.split(result.content),
             "</script>"
           ]
