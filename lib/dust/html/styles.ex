@@ -38,6 +38,7 @@ defmodule Dust.HTML.Styles do
         %{result: {:ok, result, _state}} ->
           [
             "<style>",
+            "/*", "Style source:", asset.relative_url, "*/",
             result.content
             |> Format.split()
             |> Inline.inline(images),
