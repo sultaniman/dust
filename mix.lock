@@ -21,7 +21,7 @@
   "mimerl": {:hex, :mimerl, "1.2.0", "67e2d3f571088d5cfd3e550c383094b47159f3eee8ffa08e64106cdf5e981be3", [:rebar3], [], "hexpm", "f278585650aa581986264638ebf698f8bb19df297f66ad91b18910dfc6e19323"},
   "nimble_parsec": {:hex, :nimble_parsec, "0.6.0", "32111b3bf39137144abd7ba1cce0914533b2d16ef35e8abc5ec8be6122944263", [:mix], [], "hexpm", "27eac315a94909d4dc68bc07a4a83e06c8379237c5ea528a9acff4ca1c873c52"},
   "parse_trans": {:hex, :parse_trans, "3.3.0", "09765507a3c7590a784615cfd421d101aec25098d50b89d7aa1d66646bc571c1", [:rebar3], [], "hexpm", "17ef63abde837ad30680ea7f857dd9e7ced9476cdd7b0394432af4bfc241b960"},
-  "retry": {:hex, :retry, "0.14.0", "751c0f6db0b5127acf346ea6f6c363ec4588320db785c62aa51776b4d280bf07", [:mix], [], "hexpm", "5c158bccf5e4de2a13d044b9930ceb7e7499c29e3fccd7c96f131a6b83a1cff3"},
+  "retry": {:hex, :retry, "0.14.1", "722d1b0cf87096b71213f5801d99fface7ca76adc83fc9dbf3e1daee952aef10", [:mix], [], "hexpm", "b3a609f286f6fe4f6b2c15f32cd4a8a60427d78d05d7b68c2dd9110981111ae0"},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.6", "cf344f5692c82d2cd7554f5ec8fd961548d4fd09e7d22f5b62482e5aeaebd4b0", [:make, :mix, :rebar3], [], "hexpm", "bdb0d2471f453c88ff3908e7686f86f9be327d065cc1ec16fa4540197ea04680"},
   "typed_struct": {:hex, :typed_struct, "0.2.1", "e1993414c371f09ff25231393b6430bd89d780e2a499ae3b2d2b00852f593d97", [:mix], [], "hexpm", "8f5218c35ec38262f627b2c522542f1eae41f625f92649c0af701a6fab2e11b3"},
   "unicode_util_compat": {:hex, :unicode_util_compat, "0.5.0", "8516502659002cec19e244ebd90d312183064be95025a319a6c7e89f4bccd65b", [:rebar3], [], "hexpm", "d48d002e15f5cc105a696cf2f1bbb3fc72b4b770a184d8420c8db20da2674b38"},
