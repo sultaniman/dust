@@ -26,7 +26,7 @@ defmodule Dust.HTML.Image do
     parsed = URI.parse(filename)
 
     is_svg =
-      String.ends_with?(parsed.path, ".svg") ||
+      String.ends_with?(parsed.path || "", ".svg") ||
       String.starts_with?(content, "<?xml") ||
       String.contains?(content, "</svg>")
 
