@@ -50,7 +50,7 @@ defmodule Dust.MixProject do
     [
       {:httpoison, "~> 1.7"},
       {:retry, "~> 0.14.0"},
-      {:floki, "~> 0.30.0"},
+      {:floki, "~> 0.31.0"},
       {:typed_struct, "~> 0.2.0"},
       {:ex_image_info, "~> 0.2.4"},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
