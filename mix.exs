@@ -48,15 +48,15 @@ defmodule Dust.MixProject do
 
   defp deps do
     [
-      {:httpoison, "~> 1.7"},
+      {:httpoison, "~> 1.8"},
       {:retry, "~> 0.15.0"},
-      {:floki, "~> 0.31.0"},
-      {:typed_struct, "~> 0.2.0"},
+      {:floki, "~> 0.32.0"},
+      {:typed_struct, "~> 0.2.1"},
       {:ex_image_info, "~> 0.2.4"},
-      {:ex_doc, "~> 0.22", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.13", only: :test},
+      {:ex_doc, "~> 0.25.5", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.14.3", only: :test},
       {:inch_ex, "~> 2.0", only: [:dev, :test]},
-      {:credo, "~> 1.4", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 end
