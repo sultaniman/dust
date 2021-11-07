@@ -18,7 +18,7 @@ by adding `dust` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:dust, "~> 0.0.1-dev"}
+    {:dust, "~> 0.0.2-dev"}
   ]
 end
 ```

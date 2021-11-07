@@ -1,7 +1,7 @@
 defmodule Dust.MixProject do
   use Mix.Project
 
-  @vsn "0.0.1-dev"
+  @vsn "0.0.2-dev"
   @package [
     name: "dust",
     files: ~w(lib .formatter.exs mix.exs README* LICENSE*),
