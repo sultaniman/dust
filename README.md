@@ -1,5 +1,3 @@
-![Build Status](https://img.shields.io/travis/com/imanhodjaev/dust/develop?style=for-the-badge)
-
 <h1 align="center">Dust</h1>
 <p align="center">
   <img width="150" height="150" src="https://raw.githubusercontent.com/imanhodjaev/dust/develop/assets/dust.svg"/>
