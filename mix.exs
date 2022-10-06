@@ -54,7 +54,7 @@ defmodule Dust.MixProject do
       {:typed_struct, "~> 0.2.1"},
       {:ex_image_info, "~> 0.2.4"},
       {:ex_doc, "~> 0.26.0", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.14.3", only: :test},
+      {:excoveralls, "~> 0.15.0", only: :test},
       {:inch_ex, "~> 2.0", only: [:dev, :test]},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
