@@ -48,7 +48,7 @@ defmodule Dust.MixProject do
 
   defp deps do
     [
-      {:httpoison, "~> 1.8"},
+      {:httpoison, "~> 2.0"},
       {:retry, "~> 0.15.0"},
       {:floki, "~> 0.34.0"},
       {:typed_struct, "~> 0.2.1"},
